@@ -1,6 +1,5 @@
 import {create_primitive_root, create_gui_root, find_primitive, find_gui, print_tree, view_element} from './script.js'
 
-//  actions
 let a = create_primitive_root();
 create_primitive_root();
 create_primitive_root();
@@ -11,13 +10,11 @@ a.add_node("Circle");
 a.add_node("Elliptic");
 a.add_node("Rectangle");
 a.children[3].add_node("Primitive");
-
-// // a.delete_node("Node 11");
-// view_element(a.children[2]);
-// // console.table(a);
-// console.log(display_tree("Node 1"));
-// let text = a.search_node('Node 13');
-
+console.log("<Node 삭제 전>");
+console.table(a);
+a.delete_node("Node 11");
+console.log("<Node 삭제 후>");
+console.table(a);
 
 let g = create_gui_root();
 g.add_gui("Table");
