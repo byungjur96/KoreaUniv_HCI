@@ -1,58 +1,10 @@
-html, body {
-    margin: 0;
-    padding: 0;
-}
-
 #title {
     text-align: center;
 }
 
-#interface  {
-    width: 100%;
+#index {
+    margin-top: 30px;
     display: flex;
-    justify-content: center;
-}
-
-.button {
-    display: inline-block;
-}
-
-#info {
-    position: relative;
-    width: 1rem;
-    border: 1px solid gray;
-    background-color: lightgray;
-    text-align: center;
-}
-
-#info:hover #description {
-    visibility: visible;
-}
-
-#description {
-    position: absolute;
-    visibility: hidden;
-    top: 20px;
-    right: 20px;
-    width: 100px;
-    height: 100px;
-    border: 1px solid black;
-}
-
-#result {
-    padding: 20px;
-    display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    white-space: pre;
-}
-
-table {
-    border-collapse: collapse;
-}
-
-td, th {
-    padding: 10px;
-    border: 1px solid black;
 }
