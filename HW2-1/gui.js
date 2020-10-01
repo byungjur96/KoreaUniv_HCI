@@ -173,7 +173,8 @@ class Window extends GUI {
     init_window() {
         let root = this.component.find_root();
         root.add_node("Rectangle");
-        root.add_node("Button");
+        root.children[0].add_node("Text");
+        root.add_node("Rectangle");
         return root;
     }
 }

@@ -11,10 +11,12 @@ a.add_node("Elliptic");
 a.add_node("Rectangle");
 a.children[3].add_node("Primitive");
 console.log("<Node 삭제 전>");
-console.table(a);
-a.delete_node("Node 11");
+console.table(a.children);
+a.delete_node("Node11");
 console.log("<Node 삭제 후>");
-console.table(a);
+console.table(a.children);
+
+
 
 let g = create_gui_root();
 g.add_gui("Table");

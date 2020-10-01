@@ -5,11 +5,27 @@ let primitive_num = 0;
 let gui_num = 0;
 let root_list = [];
 let gui_list = [];
+let visible = true;
+let blink_cursor;
 
-document.getElementById("search").onclick = function(){
+let command_line = document.getElementById("command");
+let command_window = document.getElementById("interface");
+
+command_window.addEventListener("click", function() {
+    command_line.focus();
+});
+
+
+command_line.addEventListener("keyup", function(event){
+    if (event.keyCode === 13) { command_discriminator(); }
+});
+
+function command_discriminator() {
     let command = document.getElementById("command").value;
+    const res = document.getElementById("result");
     let command_list = command.split(" ");
     let result = "";
+
     if (command_list[0] === "primitive") {
         // root 노드 이름들 확인하기
         if (command_list[1] === "--list") {
@@ -55,9 +71,26 @@ document.getElementById("search").onclick = function(){
         }
         else { window.alert("Wrong Command!"); }
     }
-    else { window.alert("Wrong Command!"); }
-    const res = document.getElementById("result");
-    res.innerHTML = result;
+    else if (command_list[0] === "--help") {
+        result = result + "<i>[type]</i> --list <i>[node-name]</i> : Check Root Nodes<br>"
+        + "<i>[type]</i> --tree <i>[node-name]</i> : Check Subtree Structure<br>"
+        + "<i>[type]</i> --component <i>[node-name]</i> : Check Primitive Components (Only GUI)<br>"
+        + "<i>[type]</i> --info <i>[node-name]</i> : Check Node Information<br>"
+        +"clear : Clear all history"
+    }
+    else if (command_list[0] === "clear") {
+        res.innerHTML = "";
+        command_line.value = "";
+        return;
+    }
+    else { 
+        window.alert("Wrong Command!");
+        command_line.value = "";
+        return; 
+    }
+    result = `<div class="command-sentence">${command}</div><div class="command-result">${result}</div>`
+    res.innerHTML += result;
+    command_line.value = "";
 }
 
 function create_primitive_root(){
@@ -126,8 +159,4 @@ function view_element(element) {
     return table;
 }
 
-export {
-    create_primitive_root, create_gui_root,
-    find_primitive, find_gui, 
-    print_tree, view_element
-}
+export { create_primitive_root, create_gui_root, find_primitive, find_gui, print_tree, view_element }
