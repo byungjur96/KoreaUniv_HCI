@@ -1,0 +1,12 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+
+#title {
+    text-align: center;
+    height: 50px;
+    margin: 0;
+    padding: 25px 0 0 0;
+}
