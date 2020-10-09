@@ -8,3 +8,7 @@
     flex-direction: column;
     align-items: center;
 }
+
+#index > a {
+    margin: 5px;
+}
