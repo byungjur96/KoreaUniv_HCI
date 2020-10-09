@@ -69,6 +69,7 @@ class Primitive {
         else if (type === "Circle") { child = new Circle(); }
         else if (type === "Elliptic") { child = new Elliptic(); }
         else if (type === "Rectangle") { child = new Rectangle(); }
+        else if (type === "RoundedRectangle") { child = new RoundedRectangle(); }
         else { child = new Primitive(); }
         child.parent = this;
         child.id = child.setId();
@@ -117,31 +118,33 @@ class Point extends Primitive {
 
 // 선을 의미하는 class
 class Line extends Primitive {
-    constructor(x_position, y_position, end_x=10, end_y=0) {
+    constructor(x_position, y_position, end_x=10, end_y=0, color="black") {
         super(x_position, y_position);
         if (typeof end_x === "number") { this.end_x = end_x; }
         if (typeof end_y === "number") { this.end_y = end_y; }
+        this.color = color;
+    }
+
+    set_color(string) {
+        this.color = string;
     }
 }
 
 // text를 나타내는 class
 class Text extends Primitive {
-    constructor(x_position, y_position, contents="", color="black") {
+    constructor(x_position, y_position, contents="", color="black", editable=false) {
         super(x_position, y_position);
         this.contents = contents;
         this.color = color;
+        this.editable = editable;
     }
     // 텍스트를 수정하는 함수.
-    edit_text(string) { 
-        this.contents = string;
-        // console.log(`Text has changed into ${string}!`);
-     }
-
+    edit_text(string) { if (this.editable === true) this.contents = string; }
 }
 
 // 도형들을 나타내는 class
 class Figure extends Primitive {
-    constructor(x_position, y_position, background="transparent", border="transparent") {
+    constructor(x_position, y_position, background="transparent", border="black") {
         super(x_position, y_position);
         this.background = background;
         this.border = border;
@@ -196,4 +199,23 @@ class Rectangle extends Figure {
     }
 }
 
-export {Primitive, Point, Line, Text, Circle, Elliptic, Rectangle};
+class RoundedRectangle extends Figure {
+    constructor(x_position, y_position, background, border, border_radius, height=10, width=10) {
+        super(x_position, y_position, background, border);
+        this.height = height;
+        this.width = width;
+        this.border_radius = border_radius;
+    }
+
+    // 사이즈를 설정한다.
+    setSize(w, h) {
+        this.height = h;
+        this.width = w;
+    }
+
+    setBorderRadius(r) {
+        this.border_radius = border_radius;
+    }
+}
+
+export {Primitive, Point, Line, Text, Circle, Elliptic, Rectangle, RoundedRectangle};

@@ -1,5 +1,5 @@
-import { Primitive, Point, Line, Text, Circle, Elliptic, Rectangle } from './primitive.js'
-import { GUI, Canvas, Button, RectangleButton, CircleButton, EllipticButton, Window, Table } from './gui.js'
+import { Primitive, Point, Line, Text, Circle, Elliptic, Rectangle, RoundedRectangle } from '../common/primitive.js'
+import { GUI, Canvas, Button, RectangleButton, CircleButton, EllipticButton, Window, Table } from '../common/gui.js'
 
 let primitive_num = 0;
 let gui_num = 0;
@@ -45,7 +45,11 @@ function command_discriminator() {
             if (target === undefined) {result = "Tree Not Found!";}
             else { result = view_element(target); } 
         }
-        else { window.alert("Wrong Command!"); }
+        else { 
+            window.alert("Wrong Command!"); 
+            command_line.value = "";
+            return;
+        }
     }
     else if (command_list[0] === "gui") {
         if (command_list[1] === "--list") {
@@ -69,10 +73,15 @@ function command_discriminator() {
             if (target === undefined) {result = "Tree Not Found!";}
             else { result = view_element(target); } 
         }
-        else { window.alert("Wrong Command!"); }
+        else { 
+            window.alert("Wrong Command!"); 
+            command_line.value = "";
+            return;
+        }
     }
     else if (command_list[0] === "--help") {
-        result = result + "<i>[type]</i> --list <i>[node-name]</i> : Check Root Nodes<br>"
+        result = result + "<i>[type]</i> : primitive | gui<br>"
+        + "<i>[type]</i> --list : Check Root Nodes<br>"
         + "<i>[type]</i> --tree <i>[node-name]</i> : Check Subtree Structure<br>"
         + "<i>[type]</i> --component <i>[node-name]</i> : Check Primitive Components (Only GUI)<br>"
         + "<i>[type]</i> --info <i>[node-name]</i> : Check Node Information<br>"

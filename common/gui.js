@@ -1,4 +1,4 @@
-import { Primitive, Point, Line, Text, Circle, Elliptic, Rectangle } from './primitive.js'
+import { Primitive, Point, Line, Text, Circle, Elliptic, Rectangle, RoundedRectangle } from './primitive.js'
 
 class GUI {
     constructor(x_position=0, y_position=0) {
@@ -159,6 +159,20 @@ class EllipticButton extends Button {
     init_button() {
         let root = this.component.find_root();
         root.add_node("Rectangle");
+        root.add_node("Button");
+        return root;
+    }
+}
+
+class RoundedRectangleButton extends Button {
+    constructor(x_position, y_position) {
+        super(x_position, y_position);
+        this.component = this.init_button();
+    }
+
+    init_button() {
+        let root = this.component.find_root();
+        root.add_node("RoundedRectangle");
         root.add_node("Button");
         return root;
     }
