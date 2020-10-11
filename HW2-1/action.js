@@ -1,4 +1,4 @@
-import {create_primitive_root, create_gui_root, find_primitive, find_gui, print_tree, view_element} from './script.js'
+import {create_primitive_root, create_gui_root, find_primitive, find_gui, print_tree } from '../common/display.js'
 
 let a = create_primitive_root();
 create_primitive_root();

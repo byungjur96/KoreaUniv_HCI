@@ -1,12 +1,6 @@
 import { Primitive, Point, Line, Text, Circle, Elliptic, Rectangle, RoundedRectangle } from '../common/primitive.js'
 import { GUI, Canvas, Button, RectangleButton, CircleButton, EllipticButton, Window, Table } from '../common/gui.js'
-
-let primitive_num = 0;
-let gui_num = 0;
-let root_list = [];
-let gui_list = [];
-let visible = true;
-let blink_cursor;
+import { create_primitive_root, create_gui_root, find_primitive, find_gui, print_tree, get_primitive_root, get_gui_root } from '../common/display.js'
 
 let command_line = document.getElementById("command");
 let command_window = document.getElementById("interface");
@@ -21,7 +15,7 @@ command_line.addEventListener("keyup", function(event){
 });
 
 function command_discriminator() {
-    let command = document.getElementById("command").value;
+    let command = command_line.value;
     const res = document.getElementById("result");
     let command_list = command.split(" ");
     let result = "";
@@ -29,7 +23,7 @@ function command_discriminator() {
     if (command_list[0] === "primitive") {
         // root 노드 이름들 확인하기
         if (command_list[1] === "--list") {
-            result = root_list.map(tree => tree.id);
+            result = get_primitive_root().map(tree => tree.id);
         }
         // 해당 node의 subtree 구조 확인하기
         else if (command_list[1] === "--tree") {
@@ -53,7 +47,7 @@ function command_discriminator() {
     }
     else if (command_list[0] === "gui") {
         if (command_list[1] === "--list") {
-            result = gui_list.map(tree => tree.id);  
+            result = get_gui_root().map(tree => tree.id);  
         }
         else if (command_list[1] === "--tree") {
             let tree = command_list[2];
@@ -102,46 +96,6 @@ function command_discriminator() {
     command_line.value = "";
 }
 
-function create_primitive_root(){
-    primitive_num++;
-    let root = new Primitive();
-    root.make_root(primitive_num);
-    root_list.push(root);
-    return root;
-}
-
-function create_gui_root() {
-    gui_num++;
-    let root = new GUI();
-    root.make_root(gui_num);
-    gui_list.push(root);
-    return root;
-}
-
-function find_primitive(name) {
-    let root = name.slice(0,5);
-    let tree = root_list.find(obj => obj.id === root);
-    if (name === root) { return tree; }
-    else {return tree.search_child(name, tree);}
-}
-
-function find_gui(name) {
-    let root = name.slice(0,4);
-    let tree = gui_list.find(obj => obj.id === root);
-    if (name === root) { return tree; }
-    else { return tree.search_child(name, tree); }
-}
-
-function print_tree(parent, depth) {
-    let indentation = "";
-    for (let i=0; i < depth; i++) { indentation += '&#9'; }
-    indentation = `${indentation}-${parent.id} (${parent.constructor.name})<br>`;
-    for (let child of parent.children) {
-        indentation += print_tree(child, depth + 1);
-    }
-    return indentation;
-}
-
 // Primitive 요소를 table로 시각화한다.
 function view_element(element) {
     let table = `<table><tr><th colspan=2>${element.id} (${element.constructor.name})</th></tr>`;
@@ -167,5 +121,3 @@ function view_element(element) {
     table += "</table><br>";
     return table;
 }
-
-export { create_primitive_root, create_gui_root, find_primitive, find_gui, print_tree, view_element }
