@@ -45,7 +45,7 @@ function findPrimitive(name) {
 // GUI 노트를 검색한다.
 function findGUI(name) {
     let root = name.slice(0,4);
-    let tree = guiList.find(obj => obj.id === root);
+    let tree = GUIList.find(obj => obj.id === root);
     if (name === root) { return tree; }
     else { return tree.searchChild(name, tree); }
 }
@@ -61,4 +61,4 @@ function printTree(parent, depth) {
     return indentation;
 }
 
-export { createPrimitiveRoot, createGUIRoot, findRrimitive, findGUI, printTree, getPrimitiveRoot, getGUIRoot }
+export { createPrimitiveRoot, createGUIRoot, findPrimitive, findGUI, printTree, getPrimitiveRoot, getGUIRoot }

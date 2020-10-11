@@ -1,79 +1,80 @@
 import { Primitive, Point, Line, Text, Circle, Elliptic, Rectangle, RoundedRectangle } from '../common/primitive.js'
-import { GUI, Canvas, Button, RectangleButton, CircleButton, EllipticButton, Window, Table } from '../common/gui.js'
-import { create_primitive_root, create_gui_root, find_primitive, find_gui, print_tree, get_primitive_root, get_gui_root } from '../common/display.js'
+import { GUI, Canvas, Button, RectangleButton, CircleButton, EllipticButton, RoundedRectangleButton, Window, Table } from '../common/gui.js'
+import {createPrimitiveRoot, createGUIRoot, findPrimitive, findGUI, printTree, getPrimitiveRoot, getGUIRoot } from '../common/display.js'
 
-let command_line = document.getElementById("command");
-let command_window = document.getElementById("interface");
+let commandLine = document.getElementById("command");
+let commandWindow = document.getElementById("interface");
 
-command_window.addEventListener("click", function() {
-    command_line.focus();
+// input 태그 테두리를 없앤다.
+commandWindow.addEventListener("click", function() {
+    commandLine.focus();
 });
 
-
-command_line.addEventListener("keyup", function(event){
-    if (event.keyCode === 13) { command_discriminator(); }
+// Enter 입력 시 커멘드 실행
+commandLine.addEventListener("keyup", function(event){
+    if (event.keyCode === 13) { commandDiscriminator(); }
 });
 
-function command_discriminator() {
-    let command = command_line.value;
+function commandDiscriminator() {
+    let command = commandLine.value;
     const res = document.getElementById("result");
-    let command_list = command.split(" ");
+    let commandList = command.split(" ");
     let result = "";
 
-    if (command_list[0] === "primitive") {
+    if (commandList[0] === "primitive") {
         // root 노드 이름들 확인하기
-        if (command_list[1] === "--list") {
-            result = get_primitive_root().map(tree => tree.id);
+        if (commandList[1] === "--list") {
+            result = getPrimitiveRoot().map(tree => tree.id);
         }
         // 해당 node의 subtree 구조 확인하기
-        else if (command_list[1] === "--tree") {
-            let tree = command_list[2];
-            let target = find_primitive(tree);
-            if (target === undefined) {result = "Tree Not Found!";}
-            else {result = print_tree(target, 0); }
+        else if (commandList[1] === "--tree") {
+            let tree = commandList[2];
+            let target = findPrimitive(tree);
+            if (target === undefined) { result = "Tree Not Found!"; }
+            else { result = printTree(target, 0); }
         }
         // 해당 node의 속성값 확인하기
-        else if (command_list[1] === "--info") {
-            let node = command_list[2];
-            let target = find_primitive(node);
-            if (target === undefined) {result = "Tree Not Found!";}
-            else { result = view_element(target); } 
+        else if (commandList[1] === "--info") {
+            let node = commandList[2];
+            let target = findPrimitive(node);
+            if (target === undefined) { result = "Tree Not Found!"; }
+            else { result = viewElement(target); } 
         }
         else { 
             window.alert("Wrong Command!"); 
-            command_line.value = "";
+            commandLine.value = "";
             return;
         }
     }
-    else if (command_list[0] === "gui") {
-        if (command_list[1] === "--list") {
-            result = get_gui_root().map(tree => tree.id);  
+    else if (commandList[0] === "gui") {
+        if (commandList[1] === "--list") {
+            result = getGUIRoot().map(tree => tree.id);  
         }
-        else if (command_list[1] === "--tree") {
-            let tree = command_list[2];
-            let target = find_gui(tree);
-            if (target === undefined) {result = "Tree Not Found!";}
-            else {result = print_tree(target, 0); }
+        else if (commandList[1] === "--tree") {
+            let tree = commandList[2];
+            let target = findGUI(tree);
+            if (target === undefined) { result = "Tree Not Found!"; }
+            else {result = printTree(target, 0); }
         }
-        else if (command_list[1] === "--component") {
-            let tree = command_list[2];
-            let target = find_gui(tree);
+        else if (commandList[1] === "--component") {
+            let tree = commandList[2];
+            let target = findGUI(tree);
             if (target === undefined) {result = "Tree Not Found!";}
-            else {result = print_tree(target.component, 0); }
+            else {result = printTree(target.component, 0); }
         }
-        else if (command_list[1] === "--info") {
-            let tree = command_list[2];
-            let target = find_gui(tree);
-            if (target === undefined) {result = "Tree Not Found!";}
-            else { result = view_element(target); } 
+        else if (commandList[1] === "--info") {
+            let tree = commandList[2];
+            let target = findGUI(tree);
+            if (target === undefined) { result = "Tree Not Found!"; }
+            else { result = viewElement(target); } 
         }
         else { 
             window.alert("Wrong Command!"); 
-            command_line.value = "";
+            commandLine.value = "";
             return;
         }
     }
-    else if (command_list[0] === "--help") {
+    else if (commandList[0] === "--help") {
         result = result + "<i>[type]</i> : primitive | gui<br>"
         + "<i>[type]</i> --list : Check Root Nodes<br>"
         + "<i>[type]</i> --tree <i>[node-name]</i> : Check Subtree Structure<br>"
@@ -81,23 +82,23 @@ function command_discriminator() {
         + "<i>[type]</i> --info <i>[node-name]</i> : Check Node Information<br>"
         +"clear : Clear all history"
     }
-    else if (command_list[0] === "clear") {
+    else if (commandList[0] === "clear") {
         res.innerHTML = "";
-        command_line.value = "";
+        commandLine.value = "";
         return;
     }
     else { 
         window.alert("Wrong Command!");
-        command_line.value = "";
+        commandLine.value = "";
         return; 
     }
     result = `<div class="command-sentence">${command}</div><div class="command-result">${result}</div>`
     res.innerHTML += result;
-    command_line.value = "";
+    commandLine.value = "";
 }
 
 // Primitive 요소를 table로 시각화한다.
-function view_element(element) {
+function viewElement(element) {
     let table = `<table><tr><th colspan=2>${element.id} (${element.constructor.name})</th></tr>`;
     for (let [key, value] of Object.entries(element)) {
         if (key === "children") {
@@ -111,7 +112,7 @@ function view_element(element) {
         }
         else if (key === "component") {
             if (value === null) {table += `<tr><td>${key}</td><td>${value}</td></tr>`}
-            else { table += `<tr><td>${key}</td><td>${print_tree(value, 0)}</td></tr>` }
+            else { table += `<tr><td>${key}</td><td>${printTree(value, 0)}</td></tr>` }
             
         }
         else {

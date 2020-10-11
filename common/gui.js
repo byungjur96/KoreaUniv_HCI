@@ -199,12 +199,10 @@ class Table extends GUI {
     initTable(row, column) {
         let rootNode = new Primitive();
         rootNode.makeRoot(1);
-        
         // 행을 만든다.
         for(let i=0; i<row; i++) {
-            rootNode.add_node("Primitive");
+            rootNode.addNode("Primitive");
         }
-
         // 1개의 행에 들어가는 셀을 만든다.
         // 셀은 primitive를 sub_root로 두고, rectangle과 text를 children으로 가진다.
         let children = rootNode.getChildren();
@@ -220,7 +218,7 @@ class Table extends GUI {
     }
 
     changeCellValue(row, column, text) {
-        let root = this.component.find_root();
+        let root = this.component.findRoot();
         root.children[row-1].children[column-1].children[1].editText(text);
     }
 }
