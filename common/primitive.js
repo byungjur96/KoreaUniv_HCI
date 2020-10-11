@@ -13,7 +13,7 @@ class Primitive {
     // type을 반환한다.
     getType() { return this.type; }
     // position을 반환한다.
-    getPos() { return this.position; }
+    getPos() { return [this.x_position, this.y_position]; }
     // 부모 요소를 반환한다.
     getParent() { return this.parent; }
     // 자식 요소들을 반환한다.
@@ -59,6 +59,23 @@ class Primitive {
         return ancestor;
     }
 
+    end_point() {
+        return [0,0];
+    }
+
+    getRelativePos() {
+        let before = this.parent;
+        let rel_x = 0;
+        let rel_y = 0;
+        while (before !== null && before.is_root() === false) {
+            let before_begin = before.getPos();
+            let before_end = before.end_point();
+            rel_x += before_begin[0] + before_end[0];
+            rel_y += before_begin[1] + before_end[1];
+        }
+        return [rel_x, rel_y];
+    }
+
     // 자식 node를 더한다.
     add_node(type="Primitive") {
         let child = undefined;
@@ -74,6 +91,7 @@ class Primitive {
         child.parent = this;
         child.id = child.setId();
         this.children.push(child);
+        return child;
     }
 
     // node를 삭제한다.
@@ -114,19 +132,26 @@ class Point extends Primitive {
     constructor(x_position, y_position) {
         super(x_position, y_position);
     }
+
+    end_point() {
+        super.end_point();
+    }
 }
 
 // 선을 의미하는 class
 class Line extends Primitive {
-    constructor(x_position, y_position, end_x=10, end_y=0, color="black") {
+    constructor(x_position, y_position, end_x=10, end_y=10, color="black") {
         super(x_position, y_position);
         if (typeof end_x === "number") { this.end_x = end_x; }
         if (typeof end_y === "number") { this.end_y = end_y; }
         this.color = color;
     }
 
-    set_color(string) {
-        this.color = string;
+    set_color(string) { this.color = string; }
+
+    end_point() { 
+        let [x_pos, y_pos] = [this.x_position + this.end_x, this.y_position + this.end_y];
+        return [x_pos, y_pos];
     }
 }
 
@@ -168,6 +193,8 @@ class Circle extends Figure {
     }
     // 사이즈를 설정한다.
     setSize(num) { this.radius = num; }
+
+    end_point() { return [this.radius*2, this.radius*2] }
     
 }
 
@@ -180,9 +207,11 @@ class Elliptic extends Figure {
 
     // 사이즈를 설정한다.
     setSize(w, h) {
-        this.height = h;
         this.width = w;
+        this.height = h;
     }
+
+    end_point() { return [this.width*2, this.height*2]}
 }
 
 class Rectangle extends Figure {
@@ -197,6 +226,8 @@ class Rectangle extends Figure {
         this.height = h;
         this.width = w;
     }
+
+    end_point() { return [this.width*2, this.height*2]}
 }
 
 class RoundedRectangle extends Figure {
@@ -216,6 +247,8 @@ class RoundedRectangle extends Figure {
     setBorderRadius(r) {
         this.border_radius = border_radius;
     }
+
+    end_point() { return [this.width*2, this.height*2]}
 }
 
 export {Primitive, Point, Line, Text, Circle, Elliptic, Rectangle, RoundedRectangle};
