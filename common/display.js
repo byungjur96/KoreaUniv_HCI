@@ -1,57 +1,64 @@
 import { Primitive, Point, Line, Text, Circle, Elliptic, Rectangle, RoundedRectangle } from './primitive.js'
 import { GUI, Canvas, Button, RectangleButton, CircleButton, EllipticButton, Window, Table } from './gui.js'
 
-let primitive_num = 0;
-let gui_num = 0;
-let root_list = [];
-let gui_list = [];
+let primitiveNum = 0;
+let GUINum = 0;
+let rootList = [];
+let GUIList = [];
 
-function get_primitive_root() {
-    return root_list;
+// primitive 루트 노드 리스트를 return 한다.
+function getPrimitiveRoot() {
+    return rootList;
 }
 
-function get_gui_root() {
-    return gui_list;
+// GUI 루트 노드 리스트를 return 한다.
+function getGUIRoot() {
+    return GUIList;
 }
 
-function create_primitive_root(){
-    primitive_num++;
+// primitive 루트 노드를 만든다.
+function createPrimitiveRoot(){
+    primitiveNum++;
     let root = new Primitive();
-    root.make_root(primitive_num);
-    root_list.push(root);
+    root.makeRoot(primitiveNum);
+    rootList.push(root);
     return root;
 }
 
-function create_gui_root() {
-    gui_num++;
+// GUI 루트 노드를 만든다.
+function createGUIRoot() {
+    GUINum++;
     let root = new GUI();
-    root.make_root(gui_num);
-    gui_list.push(root);
+    root.makeRoot(GUINum);
+    GUIList.push(root);
     return root;
 }
 
-function find_primitive(name) {
+// primitive 노트를 검색한다.
+function findPrimitive(name) {
     let root = name.slice(0,5);
-    let tree = root_list.find(obj => obj.id === root);
+    let tree = rootList.find(obj => obj.id === root);
     if (name === root) { return tree; }
-    else {return tree.search_child(name, tree);}
+    else { return tree.searchChild(name, tree); }
 }
 
-function find_gui(name) {
+// GUI 노트를 검색한다.
+function findGUI(name) {
     let root = name.slice(0,4);
-    let tree = gui_list.find(obj => obj.id === root);
+    let tree = guiList.find(obj => obj.id === root);
     if (name === root) { return tree; }
-    else { return tree.search_child(name, tree); }
+    else { return tree.searchChild(name, tree); }
 }
 
-function print_tree(parent, depth) {
+// subtree를 출력한다.
+function printTree(parent, depth) {
     let indentation = "";
     for (let i=0; i < depth; i++) { indentation += '&#9'; }
     indentation = `${indentation}-${parent.id} (${parent.constructor.name})<br>`;
     for (let child of parent.children) {
-        indentation += print_tree(child, depth + 1);
+        indentation += printTree(child, depth + 1);
     }
     return indentation;
 }
 
-export { create_primitive_root, create_gui_root, find_primitive, find_gui, print_tree, get_primitive_root, get_gui_root }
+export { createPrimitiveRoot, createGUIRoot, findRrimitive, findGUI, printTree, getPrimitiveRoot, getGUIRoot }

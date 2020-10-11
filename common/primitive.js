@@ -1,9 +1,9 @@
 class Primitive {
-    constructor(x_position=0, y_position=0) {
+    constructor(posX=0, posY=0) {
         this.id = undefined;
         this.type = this.constructor.name;
-        this.x_position = x_position;
-        this.y_position = y_position;
+        this.posX = posX;
+        this.posY = posY;
         this.parent = null;
         this.children = [];
     }
@@ -12,14 +12,14 @@ class Primitive {
     getId() { return this.id; }
     // type을 반환한다.
     getType() { return this.type; }
-    // position을 반환한다.
-    getPos() { return [this.x_position, this.y_position]; }
     // 부모 요소를 반환한다.
     getParent() { return this.parent; }
     // 자식 요소들을 반환한다.
     getChildren() { return this.children; }
     // node 자체를 반환한다.
     getNode() { return this; }
+    // 요소가 차지하는 가로/세로값을 반환한다.
+    getSize() { return [0,0]; }
 
     // 해당 node의 id 값을 만든다.
     setId() {
@@ -28,22 +28,26 @@ class Primitive {
         return parent.id + siblings.toString();
     }
 
-    // root node를 만들 때 id 값을 생성한다.
-    make_root(num) {
-        this.id = "Node" + num.toString();
+    // 좌표값을 설정한다.
+    setStart(x, y) {
+        this.posX = x;
+        this.posY = y;
     }
 
+    // root node를 만들 때 id 값을 생성한다.
+    makeRoot(num) { this.id = "Node" + num.toString(); }
+
     // root인지 확인한다.
-    is_root() { 
+    isRoot() { 
         if(this.parent === null) return true;
         else return false;
     }
 
     // root로부터의 깊이를 계산한다.
-    get_depth() {
+    getDepth() {
         let ancestor = this.parent;
         let depth = 1;
-        while (ancestor.is_root === false) {
+        while (ancestor.isRoot === false) {
             ancestor = ancestor.parent;
             depth++;
         }
@@ -51,33 +55,29 @@ class Primitive {
     }
 
     // root를 찾는다.
-    find_root() {
+    findRoot() {
         let ancestor = this;
-        while (ancestor.is_root() === false) {
-            ancestor = ancestor.parent;
-        }
+        while (ancestor.isRoot() === false) { ancestor = ancestor.parent; }
         return ancestor;
     }
 
-    end_point() {
-        return [0,0];
-    }
+    // offset을 반환한다.
+    getRelPos() { return [this.posX, this.posY]; }
 
-    getRelativePos() {
+    // position을 반환한다.
+    getAbsPos() {
         let before = this.parent;
-        let rel_x = 0;
-        let rel_y = 0;
-        while (before !== null && before.is_root() === false) {
-            let before_begin = before.getPos();
-            let before_end = before.end_point();
-            rel_x += before_begin[0] + before_end[0];
-            rel_y += before_begin[1] + before_end[1];
+        let [relX, relY] = [this.posX, this.posY];
+        while (before !== null && before.parent.isRoot() === false) {
+            let pos = before.getRelPos();
+            relX += pos[0];
+            relY += pos[1];
         }
-        return [rel_x, rel_y];
+        return [relX, relY];
     }
 
     // 자식 node를 더한다.
-    add_node(type="Primitive") {
+    addNode(type="Primitive") {
         let child = undefined;
         if (type === "Primitive") { child = new Primitive(); }
         else if (type === "Point") { child = new Point(); }
@@ -95,8 +95,8 @@ class Primitive {
     }
 
     // node를 삭제한다.
-    delete_node(name){
-        let target = this.search_node(name);
+    deleteNode(name){
+        let target = this.searchNode(name);
         if (target !== undefined) {
             let lst = target.parent.children;
             const idx = lst.indexOf(target);
@@ -106,12 +106,12 @@ class Primitive {
     }
 
     // 자식 node 중에 타겟이 있는지 확인한다.
-    search_child(name, parent) {
+    searchChild(name, parent) {
         if (parent.children !== []) {
             for (let child of parent.children) {
                 if (child.id === name) { return child; }
                 else {
-                    let result = this.search_child(name, child);
+                    let result = this.searchChild(name, child);
                     if (result != undefined) { return result; }
                 }
             }
@@ -120,17 +120,17 @@ class Primitive {
     }
 
     // node를 찾는다.
-    search_node(name){
-        let root = this.find_root();
-        let result = this.search_child(name, root);
+    searchNode(name){
+        let root = this.findRoot();
+        let result = this.searchChild(name, root);
         return result;
     }
 }
 
 // 점을 의미하는 class
 class Point extends Primitive {
-    constructor(x_position, y_position) {
-        super(x_position, y_position);
+    constructor(posX, posY) {
+        super(posX, posY);
     }
 
     end_point() {
@@ -140,37 +140,41 @@ class Point extends Primitive {
 
 // 선을 의미하는 class
 class Line extends Primitive {
-    constructor(x_position, y_position, end_x=10, end_y=10, color="black") {
-        super(x_position, y_position);
-        if (typeof end_x === "number") { this.end_x = end_x; }
-        if (typeof end_y === "number") { this.end_y = end_y; }
+    constructor(posX, posY, endX=10, endY=10, color="black") {
+        super(posX, posY);
+        this.endX = endX;
+        this.endY = endY;
         this.color = color;
     }
 
-    set_color(string) { this.color = string; }
+    setEnd(x, y) {
+        this.endY = x;
+        this.endY = y;
+    }
 
-    end_point() { 
-        let [x_pos, y_pos] = [this.x_position + this.end_x, this.y_position + this.end_y];
+    setColor(string) { this.color = string; }
+
+    getSize() { 
+        let [x_pos, y_pos] = [this.posX + this.end_x, this.posY + this.end_y];
         return [x_pos, y_pos];
     }
 }
 
 // text를 나타내는 class
 class Text extends Primitive {
-    constructor(x_position, y_position, contents="", color="black", editable=false) {
-        super(x_position, y_position);
+    constructor(posX, posY, contents="", color="black") {
+        super(posX, posY);
         this.contents = contents;
         this.color = color;
-        this.editable = editable;
     }
     // 텍스트를 수정하는 함수.
-    edit_text(string) { if (this.editable === true) this.contents = string; }
+    editText(string) { this.contents = string; }
 }
 
 // 도형들을 나타내는 class
 class Figure extends Primitive {
-    constructor(x_position, y_position, background="transparent", border="black") {
-        super(x_position, y_position);
+    constructor(posX, posY, background="transparent", border="black") {
+        super(posX, posY);
         this.background = background;
         this.border = border;
     }
@@ -187,20 +191,19 @@ class Figure extends Primitive {
 }
 
 class Circle extends Figure {
-    constructor (x_position, y_position, background, border, radius=5) {
-        super(x_position, y_position, background, border);
+    constructor (posX, posY, radius=5, background, border) {
+        super(posX, posY, background, border);
         this.radius = radius;
     }
     // 사이즈를 설정한다.
     setSize(num) { this.radius = num; }
 
-    end_point() { return [this.radius*2, this.radius*2] }
-    
+    getSize() { return [this.radius*2, this.radius*2] }
 }
 
 class Elliptic extends Figure {
-    constructor(x_position, y_position, background, border, height=10, width=10) {
-        super(x_position, y_position, background, border);
+    constructor(posX, posY, background, border, height=10, width=10) {
+        super(posX, posY, background, border);
         this.height = height;
         this.width = width;
     }
@@ -211,12 +214,12 @@ class Elliptic extends Figure {
         this.height = h;
     }
 
-    end_point() { return [this.width*2, this.height*2]}
+    getSize() { return [this.width, this.height] }
 }
 
 class Rectangle extends Figure {
-    constructor(x_position, y_position, background, border, height=10, width=10) {
-        super(x_position, y_position, background, border);
+    constructor(posX, posY, background, border, height=10, width=10) {
+        super(posX, posY, background, border);
         this.height = height;
         this.width = width;
     }
@@ -227,15 +230,15 @@ class Rectangle extends Figure {
         this.width = w;
     }
 
-    end_point() { return [this.width*2, this.height*2]}
+    getSize() { return [this.width, this.height]}
 }
 
 class RoundedRectangle extends Figure {
-    constructor(x_position, y_position, background, border, border_radius, height=10, width=10) {
-        super(x_position, y_position, background, border);
+    constructor(posX, posY, background, border, radius, height=10, width=10) {
+        super(posX, posY, background, border);
         this.height = height;
         this.width = width;
-        this.border_radius = border_radius;
+        this.radius = radius;
     }
 
     // 사이즈를 설정한다.
@@ -244,11 +247,10 @@ class RoundedRectangle extends Figure {
         this.width = w;
     }
 
-    setBorderRadius(r) {
-        this.border_radius = border_radius;
-    }
+    // 모서리 크기를 설정한다.
+    setRadius(r) { this.radius = r; }
 
-    end_point() { return [this.width*2, this.height*2]}
+    getSize() { return [this.width, this.height] }
 }
 
-export {Primitive, Point, Line, Text, Circle, Elliptic, Rectangle, RoundedRectangle};
+export { Primitive, Point, Line, Text, Circle, Elliptic, Rectangle, RoundedRectangle };
