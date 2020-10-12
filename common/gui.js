@@ -85,6 +85,7 @@ class GUI {
         else if (type === "RoundedRectangleButton") { child = new RoundedRectangleButton(); }
         else if (type === "Window") { child = new Window(); }
         else if (type === "Table") { child = new Table(); }
+        else if (type === "Title") { child = new Title(); }
         else { child = new GUI(); }
         child.parent = this;
         this.children.push(child);
@@ -101,6 +102,18 @@ class GUI {
             }
         }
         return undefined;
+    }
+}
+
+class Title extends GUI {
+    constructor(posX, posY) {
+        super(posX, posY);
+        let root = this.component.findRoot();
+        let text = root.addNode("Text");
+    }
+
+    setContents(contents) {
+        this.component.findRoot().children[0].editText(contents);
     }
 }
 
@@ -396,4 +409,4 @@ class Table extends GUI {
     }
 }
 
-export { GUI, Canvas, Button, RectangleButton, CircleButton, EllipticButton, RoundedRectangleButton, Window, Table };
+export { GUI, Canvas, Title, Button, RectangleButton, CircleButton, EllipticButton, RoundedRectangleButton, Window, Table };

@@ -2,6 +2,11 @@ import { createPrimitiveRoot, createGUIRoot, findPrimitive, findGUI, printTree, 
 import { drawLine, drawText, drawCircle, drawElliptic, drawRectangle, drawNode, drawPrimitiveTree, drawGUITree } from './script.js'
 
 let g = createGUIRoot();
+
+let title = g.addGUI("Title");
+title.setContents("Human Computer Interface(2020.2H)")
+title.setStart(750, 200);
+
 let window = g.addGUI("Window");
 window.setStart(100, 100);
 window.setWidth(1800);

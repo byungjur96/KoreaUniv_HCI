@@ -1,5 +1,5 @@
 import { Primitive, Point, Line, Text, Circle, Elliptic, Rectangle, RoundedRectangle } from './primitive.js'
-import { GUI, Canvas, Button, RectangleButton, CircleButton, EllipticButton, Window, Table } from './gui.js'
+import { GUI, Canvas, Title, Button, RectangleButton, CircleButton, EllipticButton, Window, Table } from './gui.js'
 
 let primitiveNum = 0;
 let GUINum = 0;
