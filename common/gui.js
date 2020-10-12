@@ -176,8 +176,6 @@ class Window extends GUI {
        
         let contents = root.addNode("Rectangle");
         contents.setSize(100, 1330)
-
-        console.log(tab);
         this.setBtnPos(tab.width);
         return root;
     }
@@ -214,7 +212,6 @@ class Button extends GUI {
         text.posY = box[1] / 2;
         text.textAlign = "center";
         text.textBaseline = "middle";
-        console.log(text);
     }
 
     setContents(contents) {

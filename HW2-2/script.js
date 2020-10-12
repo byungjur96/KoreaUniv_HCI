@@ -126,39 +126,4 @@ function drawGUITree(gui) {
     }
 }
 
-// let root = createPrimitiveRoot();
-
-// let vertical = root.addNode("Line");
-// vertical.setStart(100,0);
-// vertical.setEnd(100,2000);
-
-// let child = vertical.addNode("Rectangle");
-// child.setSize(200, 200);
-// console.log(child.getAbsPos());
-
-// let grand = child.addNode("Rectangle");
-// grand.setSize(100, 100);
-// console.log(grand.getAbsPos());
-
-// let text = root.addNode("Text");
-// text.editText("Hello World");
-// text.setStart(200, 200);
-
-// let circle = root.addNode("Circle");
-// circle.setStart(600, 600);
-// circle.setSize(100);
-// circle.setBackground("purple");
-// circle.setBorder("green");
-
-// let rectangle = root.addNode("Rectangle");
-// rectangle.setStart(400, 400);
-// rectangle.setSize(200, 200);
-// rectangle.setBackground("blue");
-// rectangle.setBorder("red");
-
-// // let elliptic = new Elliptic(1000, 1000, "transparent", "black", 100, 200);
-// // let rectangle = new Rectangle(1000, 1000, "transparent", "red", 100, 200);
-
-// drawPrimitiveTree(root);
-
 export { drawLine, drawText, drawCircle, drawElliptic, drawRectangle, drawNode, drawPrimitiveTree, drawGUITree }
