@@ -68,10 +68,11 @@ class Primitive {
     getAbsPos() {
         let before = this.parent;
         let [relX, relY] = [this.posX, this.posY];
-        while (before !== null && before.parent.isRoot() === false) {
+        while (before !== null && this.isRoot() === false) {
             let pos = before.getRelPos();
             relX += pos[0];
             relY += pos[1];
+            before = before.parent;
         }
         return [relX, relY];
     }
@@ -133,8 +134,8 @@ class Point extends Primitive {
         super(posX, posY);
     }
 
-    end_point() {
-        super.end_point();
+    getSize() {
+        super.getSize();
     }
 }
 
@@ -148,24 +149,24 @@ class Line extends Primitive {
     }
 
     setEnd(x, y) {
-        this.endY = x;
+        this.endX = x;
         this.endY = y;
     }
 
     setColor(string) { this.color = string; }
 
-    getSize() { 
-        let [x_pos, y_pos] = [this.posX + this.end_x, this.posY + this.end_y];
-        return [x_pos, y_pos];
-    }
+    getSize() { return [this.endX, this.endY]; }
 }
 
 // text를 나타내는 class
 class Text extends Primitive {
-    constructor(posX, posY, contents="", color="black") {
+    constructor(posX, posY, contents="", color="black", font="30px Arial", align="start", baseline="middle") {
         super(posX, posY);
         this.contents = contents;
         this.color = color;
+        this.font = font;
+        this.textAlign = align;
+        this.textBaseline = baseline;
     }
     // 텍스트를 수정하는 함수.
     editText(string) { this.contents = string; }
