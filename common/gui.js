@@ -93,6 +93,17 @@ class GUI {
         return child;
     }
 
+    // node를 삭제한다.
+    deleteNode(name){
+        let target = this.searchChild(name);
+        if (target !== undefined) {
+            let lst = target.parent.children;
+            const idx = lst.indexOf(target);
+            lst.splice(idx, 1);
+            target.parent = undefined;
+        }
+    }
+
     // 자식 gui를 찾는다.
     searchChild(name, parent) {
         if (parent.children !== []) {

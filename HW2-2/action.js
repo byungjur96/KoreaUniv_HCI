@@ -1,20 +1,31 @@
 import { createPrimitiveRoot, createGUIRoot, findPrimitive, findGUI, printTree, getPrimitiveRoot, getGUIRoot } from '../common/display.js'
 import { drawLine, drawText, drawCircle, drawElliptic, drawRectangle, drawNode, drawPrimitiveTree, drawGUITree } from './script.js'
 
+// GUI Root
 let g = createGUIRoot();
 
-let title = g.addGUI("Title");
-title.setContents("Human Computer Interface(2020.2H)")
-title.setStart(750, 200);
-
+// window
 let window = g.addGUI("Window");
 window.setStart(100, 100);
 window.setWidth(1800);
 
-let c = window.addGUI("Table");
+// title
+let title = window.addGUI("Title");
+title.setContents("Human Computer Interface(2020.2H)")
+title.setStart(750, 200);
 
+// table
+let c = window.addGUI("Table");
 c.initTable(16, 3);
 c.setStart(400, 250);
+
+// Apply 버튼
+let btn = window.addGUI("RectangleButton");
+btn.setStart(400, 1300);
+btn.setSize(200, 50);
+btn.setContents("Apply");
+
+// table 컨텐츠 채우기
 c.changeCellValue(1, 1, "Week");
 c.changeCellValue(2, 1, "9-1");
 c.changeCellValue(3, 1, "9-2(2)");
@@ -58,14 +69,13 @@ c.changeCellValue(11, 3, "HW2 Due");
 c.changeCellValue(14, 3, "Exam");
 c.changeCellValue(15, 3, "HW 3/4/5 Due");
 c.changeCellValue(16, 3, "Final Report/Presentation Due");
+
+// 테이블 크기 변경
 c.changeRowHeight(0, 100);
 c.changeColWidth(0, 150);
 c.changeColWidth(1, 600);
 c.changeColWidth(2, 450);
 c.setRowHeader(0);
 
-let btn = window.addGUI("RectangleButton");
-btn.setStart(400, 1300);
-btn.setSize(200, 50);
-btn.setContents("Apply");
+// GUI 화면 표시
 drawGUITree(g);
