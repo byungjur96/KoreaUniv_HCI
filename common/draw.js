@@ -1,13 +1,10 @@
-import { Primitive, Point, Line, Text, Circle, Elliptic, Rectangle, RoundedRectangle } from '../common/primitive.js'
-import { GUI, Title, Canvas, Button, RectangleButton, CircleButton, EllipticButton, Window, Table } from '../common/gui.js'
-import { createPrimitiveRoot, createGUIRoot, findPrimitive, findGUI, printTree, getPrimitiveRoot, getGUIRoot } from '../common/display.js'
-
-let canvas = document.getElementById("canvas");
+import { Primitive, Point, Line, Text, Circle, Elliptic, Rectangle, RoundedRectangle } from './primitive.js'
+import { GUI, Title, Canvas, Button, RectangleButton, CircleButton, EllipticButton, Window, Table } from './gui.js'
+import { createPrimitiveRoot, createGUIRoot, findPrimitive, findGUI, printTree, getPrimitiveRoot, getGUIRoot } from './display.js'
 
 // 선을 그린다.
 function drawLine(node) {
     if (node.type === "Line" && canvas.getContext) {
-        console.log("Line Displayed!");
         let ctx = canvas.getContext('2d');
         ctx.beginPath();
         ctx.moveTo(node.posX, node.posY);
@@ -16,14 +13,14 @@ function drawLine(node) {
         ctx.lineWidth = 2;
         ctx.strokeStyle = node.color;
         ctx.stroke();
+        return true;
     }
-    else { console.log("Line Failed!"); }
+    else { return false; }
 }
 
 // 텍스트를 입력한다.
 function drawText(node) {
     if (node.type === "Text" && canvas.getContext) {
-        console.log("Text Displayed!");
         let ctx = canvas.getContext('2d');
         ctx.beginPath();
         ctx.font = node.font;
@@ -32,14 +29,14 @@ function drawText(node) {
         ctx.textBaseline = node.textBaseline;
         ctx.textAlign = node.textAlign;
         ctx.fillText(node.contents, posX, posY);
+        return true;
     }
-    else { console.log("Text Failed!"); }
+    else { return false; }
 }
 
 // 원을 그린다.
 function drawCircle(node) {
     if (node.type === "Circle" && canvas.getContext) {
-        console.log("Circle Displayed!");
         let ctx = canvas.getContext("2d");
         ctx.beginPath();
         let absPos = node.getAbsPos();
@@ -50,8 +47,9 @@ function drawCircle(node) {
         ctx.strokeStyle = node.border;
         ctx.fill();
         ctx.stroke();
+        return true;
     }
-    else { console.log("Circle Failed!");}
+    else { return false; }
 }
 
 // 타원을 그린다.
@@ -62,7 +60,6 @@ function drawElliptic(node) {
 // 직사각형을 그린다.
 function drawRectangle(node) {
     if (node.type === "Rectangle" && canvas.getContext) {
-        console.log("Rectangle Displayed!");
         let ctx = canvas.getContext("2d");
         ctx.beginPath();
         ctx.fillStyle=node.background;
@@ -74,30 +71,34 @@ function drawRectangle(node) {
         ctx.strokeStyle=node.border;
         ctx.strokeRect(centerX, centerY, size[0], size[1]);
         ctx.stroke();
+        return true;
     }
-    else { console.log("Rectangle Failed!"); }
+    else { return false; }
 }
 
 // node의 종류에 따라 해당하는 node를 canvas에 표시한다.
 function drawNode(node) {
     let type = node.type;
-    if (type === "Primitive" ) { return; }
-    else if (type === "Point") { return; }
-    else if (type === "Line") { drawLine(node); }
-    else if (type === "Text") { drawText(node); }
-    else if (type === "Circle") { drawCircle(node); }
-    else if (type === "Elliptic") { drawElliptic(node); }
-    else if (type === "Rectangle") { drawRectangle(node); }
+    let res = false;
+    if (type === "Primitive" ) { res = true; }
+    else if (type === "Point") { res = true; }
+    else if (type === "Line") { res = drawLine(node); }
+    else if (type === "Text") { res = drawText(node); }
+    else if (type === "Circle") { res = drawCircle(node); }
+    else if (type === "Elliptic") { res = drawElliptic(node); }
+    else if (type === "Rectangle") { res = drawRectangle(node); }
     // else if (type === "RoundedRectangle") { drawCircle(node); }
     else { 
-        console.log("Wrong Node!");
+        console.warn("Wrong Node");
         console.log(node); 
     }
+    // if (res) console.log(type + " Displayed!");
+    // else console.log(type + " Failed!");
 }
 
 // GUI node에 대한 component를 canvas에 표시한다.
 function drawGUI(gui) {
-    console.log(`Draw ${gui.type}`)
+    // console.log(`Draw ${gui.type}`)
     let root = gui.component.findRoot();
     root.posX += gui.posX;
     root.posY += gui.posY;

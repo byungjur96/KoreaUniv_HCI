@@ -1,0 +1,19 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+
+#title {
+    text-align: center;
+    height: 50px;
+    margin: 0;
+    padding: 25px 0;
+}
+
+#canvas {
+    width: 80vh;
+    height: 80vh;
+    border: 1px solid black;
+    margin: 0 calc((100vw - 80vh)/2);
+}

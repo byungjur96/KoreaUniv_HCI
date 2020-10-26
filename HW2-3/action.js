@@ -1,8 +1,6 @@
 import { createPrimitiveRoot, createGUIRoot, findPrimitive, findGUI, printTree, getPrimitiveRoot, getGUIRoot } from '../common/display.js'
 import { drawLine, drawText, drawCircle, drawElliptic, drawRectangle, drawNode, drawPrimitiveTree, drawGUITree } from '../common/draw.js'
 
-let canvas = document.getElementById("canvas");
-
 // GUI Root
 let g = createGUIRoot();
 

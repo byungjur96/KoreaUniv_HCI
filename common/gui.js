@@ -46,6 +46,18 @@ class GUI {
         this.posY = y;
     }
 
+    // position을 반환한다.
+    getAbsPos() {
+        let before = this.parent;
+        let [relX, relY] = [this.posX, this.posY];
+        while (before !== null && this.isRoot() === false) {
+            relX += before.posX;
+            relY += before.posY;
+            before = before.parent;
+        }
+        return [relX, relY];
+    }
+
     makeRoot(num) { this.id = "GUI" + num.toString(); }
 
     // root인지 확인한다.

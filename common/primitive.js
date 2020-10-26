@@ -25,7 +25,7 @@ class Primitive {
     setId() {
         let parent = this.parent;
         let siblings = parent.children.length + 1;
-        return parent.id + siblings.toString();
+        return parent.id + '-' + siblings.toString();  // 자식 node가 10개 이상일 경우를 대비하여 -로 연결
     }
 
     // 좌표값을 설정한다.
@@ -61,17 +61,13 @@ class Primitive {
         return ancestor;
     }
 
-    // offset을 반환한다.
-    getRelPos() { return [this.posX, this.posY]; }
-
     // position을 반환한다.
     getAbsPos() {
         let before = this.parent;
         let [relX, relY] = [this.posX, this.posY];
         while (before !== null && this.isRoot() === false) {
-            let pos = before.getRelPos();
-            relX += pos[0];
-            relY += pos[1];
+            relX += before.posX;
+            relY += before.posY;
             before = before.parent;
         }
         return [relX, relY];
@@ -143,33 +139,36 @@ class Point extends Primitive {
 class Line extends Primitive {
     constructor(posX, posY, endX=10, endY=10, color="black") {
         super(posX, posY);
-        this.endX = endX;
-        this.endY = endY;
+        this.width = endX;
+        this.height = endY;
         this.color = color;
     }
 
-    setEnd(x, y) {
-        this.endX = x;
-        this.endY = y;
+    setSize(x, y) {
+        this.width = x;
+        this.height = y;
     }
 
     setColor(string) { this.color = string; }
 
-    getSize() { return [this.endX, this.endY]; }
+    getSize() { return [this.width, this.height]; }
 }
 
 // text를 나타내는 class
 class Text extends Primitive {
     constructor(posX, posY, contents="", color="black", font="30px Arial", align="start", baseline="middle") {
-        super(posX, posY);
+        super(posX, posY);    
         this.contents = contents;
         this.color = color;
         this.font = font;
         this.textAlign = align;
         this.textBaseline = baseline;
+        [this.width, this.height] = [0,0];
     }
     // 텍스트를 수정하는 함수.
-    editText(string) { this.contents = string; }
+    editText(string) { 
+        this.contents = string; 
+    }
 }
 
 // 도형들을 나타내는 class
