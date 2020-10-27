@@ -7,29 +7,26 @@ let canvas = document.getElementById("canvas");
 
 canvas.addEventListener("click", (event) => {
     let roots = getGUIRoot();
-    let [posX, posY] = getClickPos(event);
     let result = {};
-    // 클릭된 좌표
+    
+    let [posX, posY] = getClickPos(event);
+    
+    // 클릭된 좌표에 위치하는 gui와 해당 gui의 primitive를 모두 확인한다.
     for (let root of roots) {
         let [guiX, guiY] = root.getAbsPos();
         result = traverseGUI(root, posX, posY, result);
     }
     let [gui, primitive] = chooseTop(result);
+
     selectedBox(gui, primitive);
     console.log(`${gui.id}[${gui.type}] Selected!\n(node: ${primitive.id}[${primitive.type}])`);
-    if (gui.action["root"]) {
-        for(let act of gui.action["root"]) {
-            actionParser(act);
-        }
-    }
-    if (gui.action[primitive.id]) {
-        for(let act of gui.action[primitive.id]) {
-            actionParser(act);
-        }
-    }
-    
+    // GUI 전체에 해당하는 event를 실행한다.
+    if (gui.action["root"]) for(let act of gui.action["root"]) actionParser(act);
+    // GUI 내에서 특정 primitive에 해당되는 event들을 확인한다.
+    if (gui.action[primitive.id]) for(let act of gui.action[primitive.id]) actionParser(act);
 });
 
+// action에 정의되어 있는 command를 실제 함수와 매칭한다.
 function actionParser(str) {
     let commands = str.split(" ");
     if (commands[0] === "closeGUI") {
@@ -44,8 +41,6 @@ function actionParser(str) {
     else if (commands[0] === "goToLink") {
         goToLink(commands[1], commands[2]);
     }
-     
-    
 }
 
 // 화면에서 클릭된 좌표를 canvas의 좌표로 변환한다.
@@ -53,11 +48,9 @@ function getClickPos(e) {
     // 실제 화면에 표시된 canvas 사이즈
     let realWidth = e.target.clientWidth;
     let realHeight = e.target.clientHeight;
-
     // 실제 클릭된 화면 위치
     let realX = e.offsetX;
     let realY = e.offsetY;
-
     // canvas 내의 위치
     let canvasX = Math.round(realX * (2000/realWidth));
     let canvasY = Math.round(realY * (2000/realHeight));
@@ -65,7 +58,11 @@ function getClickPos(e) {
     return [canvasX, canvasY];
 }
 
+// 
 function chooseTop(obj) {
+    // 해당 위치에 아무 요소도 없다면 null 값을 반환한다.
+    if (Object.keys(obj).length === 0) return [null, null];
+
     let roots = getGUIRoot();
     let guiID = Object.keys(obj).reverse()[0];
     let gui = obj[guiID][0];
@@ -73,23 +70,28 @@ function chooseTop(obj) {
     return [gui, primitive];
 }
 
-// 선택된 primitive에 테두리를 둘러준다.
+// 선택된 primitive와 gui에 테두리를 둘러준다.
 function selectedBox(gui, primitive) {
     canvas = document.getElementById("canvas");
     let ctx = canvas.getContext("2d");
-    ctx.beginPath();
+
     let [guiX, guiY] = gui.getAbsPos();
     let [nodeX, nodeY] = primitive.getAbsPos();
-    let size = primitive.getSize();
+    let [pWidth, pHeight] = primitive.getSize();
+    let [gWidth, gHeight] = gui.getSize();
+    ctx.beginPath();
+    
+    
+    // 선택된 primitive에 테두리를 둘러준다.
     ctx.background="transparent";
     ctx.strokeStyle="red";
-    let posX = guiX + nodeX - 5;
-    let posY = guiY + nodeY - 5;
-    ctx.strokeRect(posX, posY, size[0]+10, size[1]+10);
-    let g = gui.getSize();
+    ctx.strokeRect(guiX + nodeX - 5, guiY + nodeY - 5, pWidth+10, pHeight+10);
+    
+    // 선택된 gui에 테두리를 둘러준다.
     ctx.background="transparent";
     ctx.strokeStyle="blue";
-    ctx.strokeRect(posX-nodeX, posY-nodeY, g[0]+10, g[1]+10);
+    ctx.strokeRect(guiX-5, guiY-5, g[0]+10, g[1]+10);
+
     ctx.stroke();
 }
 
@@ -98,17 +100,14 @@ function traverseGUI(gui, x, y, res) {
     let [posX, posY] = gui.getAbsPos();
     let inRange = isRange(gui.getComponent(), x-posX, y-posY);
     let lst = traverseNode(gui.getComponent(), x-posX, y-posY);
-
     if (inRange) {
-        if (gui.id in res) {res[gui.id][1] = res[gui.id][1].concat(lst);console.log("H");}
+        if (gui.id in res) res[gui.id][1] = res[gui.id][1].concat(lst);
         else res[gui.id] = [gui,lst];
     }
-
     for (let child of gui.children) {
         let [guiX, guiY] = child.getAbsPos();
         res = traverseGUI(child, x, y, res);
     }
-    // return [guiList, primitiveList];
     return res;
 }
 

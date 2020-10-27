@@ -21,11 +21,18 @@ c.initTable(16, 3);
 c.setStart(300, 150);
 
 // Apply 버튼
-let btn = window.addGUI("RectangleButton");
-btn.setStart(300, 1200);
-btn.setSize(200, 50);
-btn.setContents("Apply");
-btn.action['root'] = [`disableBtn ${btn.id} Enrolled`];
+let btn1 = window.addGUI("RectangleButton");
+btn1.setStart(300, 1200);
+btn1.setSize(200, 50);
+btn1.setContents("Apply");
+btn1.action['root'] = [`disableBtn ${btn1.id} Enrolled`];
+
+// Apply 버튼
+let btn2 = window.addGUI("RectangleButton");
+btn2.setStart(550, 1200);
+btn2.setSize(200, 50);
+btn2.setContents("Visit Link");
+btn2.action['root'] = [`goToLink ${btn2.id} https://dxp.korea.ac.kr/`];
 
 // table 컨텐츠 채우기
 c.changeCellValue(1, 1, "Week");

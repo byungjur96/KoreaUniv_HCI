@@ -6,8 +6,8 @@ import { GUI, Canvas, Title, Button, RectangleButton, CircleButton, EllipticButt
 function closeGUI(gui) {
     let canvas = document.getElementById("canvas");
     let root = getGUIRoot()[0];
-    console.log(root);
     root.deleteNode(gui);
+
     let ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
@@ -22,7 +22,7 @@ function changeCell(gui, row, col) {
     let contents = window.prompt(`${row}행 ${col}열의 값을 입력해주세요.`);
     if (contents === null) return;
     table.changeCellValue(row, col, contents);
-    drawGUITree(table.findRoot());
+    drawGUITree(root);
 }
 
 function disableBtn(gui, newText) {
@@ -48,6 +48,5 @@ function goToLink(gui, link) {
     drawGUITree(btn.findRoot());
     window.open(link);
 }
-
 
 export { closeGUI, changeCell, disableBtn, goToLink };

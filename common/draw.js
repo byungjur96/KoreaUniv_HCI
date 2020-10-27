@@ -15,7 +15,7 @@ function drawLine(node, x, y) {
         ctx.stroke();
         return true;
     }
-    else { return false; }
+    else return false;
 }
 
 // 텍스트를 입력한다.
@@ -34,7 +34,7 @@ function drawText(node, x, y) {
         ctx.fillText(node.contents, posX+x, posY+y);
         return true;
     }
-    else { return false; }
+    else return false;
 }
 
 // 원을 그린다.
@@ -52,7 +52,7 @@ function drawCircle(node, x, y) {
         ctx.stroke();
         return true;
     }
-    else { return false; }
+    else return false;
 }
 
 // 타원을 그린다.
@@ -76,7 +76,7 @@ function drawRectangle(node, x, y) {
         ctx.stroke();
         return true;
     }
-    else { return false; }
+    else return false;
 }
 
 // node의 종류에 따라 해당하는 node를 canvas에 표시한다.
@@ -95,13 +95,10 @@ function drawNode(node, x, y) {
         console.warn("Wrong Node");
         console.log(node); 
     }
-    // if (res) console.log(type + " Displayed!");
-    // else console.log(type + " Failed!");
 }
 
 // GUI node에 대한 component를 canvas에 표시한다.
 function drawGUI(gui) {
-    // console.log(`Draw ${gui.type}`)
     let root = gui.component.findRoot();
     let [absX, absY] = gui.getAbsPos();
     drawPrimitiveTree(gui.component, absX, absY);
@@ -110,22 +107,20 @@ function drawGUI(gui) {
 // 해당 primitive node를 root node로 가지는 subtree를 canvas에 표시한다.
 function drawPrimitiveTree(node, x, y) {
     drawNode(node, x, y);
-    if (node !== undefined && node.children !== undefined && node.children.length !== 0) {
-        let children = node.children;
-        for(let child of children) {
-            drawPrimitiveTree(child, x, y);
-        }
+    if (node === undefined || node.children === undefined || node.children.length === 0) return;
+    let children = node.children;
+    for(let child of children) {
+        drawPrimitiveTree(child, x, y);
     }
 }
 
 // 해당 gui node를 root node로 가지는 subtree를 canvas에 표시한다.
 function drawGUITree(gui) {
     drawGUI(gui);
-    if (gui !== undefined && gui.children !== undefined && gui.children.length !== 0) {
-        let children = gui.children;
-        for(let child of children) {
-            drawGUITree(child);
-        }
+    if (gui === undefined || gui.children === undefined || gui.children.length === 0) return
+    let children = gui.children;
+    for(let child of children) {
+        drawGUITree(child);
     }
 }
 
