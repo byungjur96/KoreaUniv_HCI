@@ -7,18 +7,17 @@ let roots = getGUIRoot();
 
 canvas.addEventListener("click", (event) => {
     let [posX, posY] = getClickPos(event);
-    let primitives = [];
     let guis = [];
+    console.clear();
     console.log(posX, posY);
     for (let root of roots) {
-        let [gui, primitive] = traverseGUI(root, posX, posY);
-        primitives = primitives.concat(primitive);
+        let [guiX, guiY] = root.getAbsPos();
+        let gui = traverseGUI(root, posX, posY);
         guis = guis.concat(gui);
     }
     console.log(guis);
-    console.log(primitives);
-    let lst = primitives.map(a => a.getId().slice(4).split("-"));
-    console.log(lst);
+    // let lst = primitives.map(a => a.getId().slice(4).split("-"));
+    // console.log(lst);
 })
 
 function getClickPos(e) {
@@ -37,33 +36,47 @@ function getClickPos(e) {
     return [canvasX, canvasY];
 }
 
-function traverseGUI(node, x, y) {
+function traverseGUI(gui, x, y) {
     let primitive = [];
-    let gui = [];
-    let nodes = traverseNode(node.getComponent(), x, y);
-    if (nodes.length != 0) {
-        console.log(nodes);
-        gui.push(node);}
-    primitive = primitive.concat(nodes);
-    for (let child of node.children) {
-        let [g, p] = traverseGUI(child, x, y);
-        primitive = primitive.concat(p);
-        gui = gui.concat(g);
+    let guiList = [];
+    let [posX, posY] = gui.getAbsPos();
+    console.log(gui.id, gui.type);
+    console.log(gui.getAbsPos());
+    let inRange = isRange(gui.getComponent(), x-posX, y-posY);
+    let lst = traverseNode(gui.getComponent(), x-posX, y-posX);
+    console.log(lst);
+    if (inRange) guiList.push(gui);
+    for (let child of gui.children) {
+        let [guiX, guiY] = child.getAbsPos();
+        let g = traverseGUI(child, x, y);
+        guiList = guiList.concat(g);
     }
-    return [gui, primitive];
+    return guiList;
+}
+
+function isRange(node, x, y) {
+    let inRange = false;
+    let [posX, posY] = node.getAbsPos();
+    let [width, height] = node.getSize();
+    if (posX <= x && x <= posX+width && posY <= y && y <= posY+height) {
+        console.log(node);
+        return true;
+    }
+    if (node.children === []) {
+        return inRange;
+    }
+    for (let child of node.children) {
+        inRange = inRange || isRange(child, x, y);
+    }
+    return inRange;
 }
 
 function traverseNode(node, x, y) {
     let result = [];
-    
     let [posX, posY] = node.getAbsPos();
     let [width, height] = node.getSize();
     if (posX <= x && x <= posX+width && posY <= y && y <= posY+height) {
         result.push(node);
-        // console.log(node.type);
-        // console.log(`target node (start) : (${posX}, ${posY})`);
-        // console.log(`target node (end) : (${posX+width}, ${posY+height})`);
-        // console.log(`point : (${x}, ${y})`);
     }
     if (node.children === []) {
         return result;

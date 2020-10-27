@@ -163,11 +163,19 @@ class Text extends Primitive {
         this.font = font;
         this.textAlign = align;
         this.textBaseline = baseline;
-        [this.width, this.height] = [0,0];
+        [this.width, this.height] = this.getSize();
     }
     // 텍스트를 수정하는 함수.
     editText(string) { 
         this.contents = string; 
+        this.getSize();
+    }
+
+    getSize() {
+        let ctx = document.getElementById("canvas").getContext("2d");
+        let width = ctx.measureText(this.contents).width;
+        let height = parseInt(this.font);
+        return [width, height];
     }
 }
 

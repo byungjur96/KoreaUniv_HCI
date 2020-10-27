@@ -37,7 +37,7 @@ class GUI {
     setId() {
         let parent = this.parent;
         let siblings = parent.children.length;
-        return parent.id + siblings.toString();
+        return parent.id + '-' + siblings.toString();
     }
 
     // 좌표값을 설정한다.
@@ -48,12 +48,13 @@ class GUI {
 
     // position을 반환한다.
     getAbsPos() {
-        let before = this.parent;
-        let [relX, relY] = [this.posX, this.posY];
-        while (before !== null && this.isRoot() === false) {
-            relX += before.posX;
-            relY += before.posY;
-            before = before.parent;
+        let node = this;
+        let relX = 0;
+        let relY = 0;
+        while (node !== null && node.isRoot() === false) {
+            relX += node.posX;
+            relY += node.posY;
+            node = node.parent;
         }
         return [relX, relY];
     }
@@ -129,14 +130,31 @@ class GUI {
 }
 
 class Title extends GUI {
-    constructor(posX, posY) {
+    constructor(contents, posX, posY) {
         super(posX, posY);
         let root = this.component.findRoot();
         let text = root.addNode("Text");
+        this.component = root;
+        this.height = 0;
+        this.width = 0;
     }
 
     setContents(contents) {
-        this.component.findRoot().children[0].editText(contents);
+        let text = this.component.findRoot().children[0];
+        text.editText(contents);
+        this.height = parseInt(text.font);
+        let ctx = document.getElementById("canvas").getContext("2d");
+        this.width = ctx.measureText(contents).width;
+
+    }
+
+    setRowAlign(idx, align="center") {
+        let primitive = this.component;
+        let rows = primitive.findRoot().children;
+        let target = rows[idx].children;
+        for (let cell of target) {
+            this.horizontalCenter(cell);
+        }
     }
 }
 
@@ -184,6 +202,7 @@ class Window extends GUI {
 
     initWindow() {
         let root = this.component.findRoot();
+        let contents = root.addNode("Rectangle");
         let tab = root.addNode("Rectangle");
         let button = tab.addNode("Primitive");
         let btn = button.addNode("Circle");
@@ -197,8 +216,10 @@ class Window extends GUI {
         btn_for.font = "20px Arial";
         btn_for.textAlign = "center";
        
-        let contents = root.addNode("Rectangle");
-        contents.setSize(100, 1330)
+        
+        contents.setSize(100, 1300);
+        contents.posY = tab.posY;
+        contents.setBackground("white")
         this.setBtnPos(tab.width);
         return root;
     }
@@ -206,8 +227,8 @@ class Window extends GUI {
     setBtnPos(width) {
         let root = this.component.findRoot();
         // primitive
-        let tab = root.children[0];
-        let btn = root.children[0].children[0];
+        let tab = root.children[1];
+        let btn = root.children[1].children[0];
         let btn_style = btn.children[0];
         btn.children[0].setSize(10);
         btn.setStart(width-30, 5);
@@ -220,6 +241,13 @@ class Window extends GUI {
         tab.width = width;
         contents.width = width;
         this.setBtnPos(width);
+    }
+
+    setHeight(height) {
+        let root = this.component.findRoot();
+        let tab = root.children[1];
+        let contents = root.children[0];
+        contents.height = height;
     }
 }
 

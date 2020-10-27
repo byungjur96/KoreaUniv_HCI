@@ -12,16 +12,16 @@ window.setWidth(1800);
 // title
 let title = window.addGUI("Title");
 title.setContents("Human Computer Interface(2020.2H)")
-title.setStart(750, 200);
+title.setStart(650, 100);
 
 // table
 let c = window.addGUI("Table");
 c.initTable(16, 3);
-c.setStart(400, 250);
+c.setStart(300, 150);
 
 // Apply 버튼
 let btn = window.addGUI("RectangleButton");
-btn.setStart(400, 1300);
+btn.setStart(300, 1200);
 btn.setSize(200, 50);
 btn.setContents("Apply");
 
@@ -76,6 +76,16 @@ c.changeColWidth(0, 150);
 c.changeColWidth(1, 600);
 c.changeColWidth(2, 450);
 c.setRowHeader(0);
+
+let alert = g.addGUI("Window");
+alert.setStart(800, 1000);
+alert.setWidth(400);
+alert.setHeight(200);
+
+let msg = alert.addGUI("Title");
+msg.setStart(100, 100);
+msg.setContents("Class Enrolled!");
+
 
 // GUI 화면 표시
 drawGUITree(g);
