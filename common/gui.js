@@ -9,6 +9,9 @@ class GUI {
         this.posY = y;
         this.parent = null;
         this.children = [];
+        this.action = {
+            'root' : []
+        };
     }
 
     // Primitive Root Tree를 만든다.
@@ -108,7 +111,7 @@ class GUI {
 
     // node를 삭제한다.
     deleteNode(name){
-        let target = this.searchChild(name);
+        let target = this.searchNode(name);
         if (target !== undefined) {
             let lst = target.parent.children;
             const idx = lst.indexOf(target);
@@ -119,13 +122,24 @@ class GUI {
 
     // 자식 gui를 찾는다.
     searchChild(name, parent) {
+        let target = undefined;
         if (parent.children !== []) {
             for (let child of parent.children) {
-                if (child.id === name) { return child; }
-                else { return this.searchChild(name, child) };
+                if (child.id === name) { target = child; }
+                else { 
+                    let next = this.searchChild(name, child);
+                    if (next !== undefined) target = next;
+                };
             }
         }
-        return undefined;
+        return target;
+    }
+
+    // node를 찾는다.
+    searchNode(name){
+        let root = this.findRoot();
+        let result = this.searchChild(name, root);
+        return result;
     }
 }
 
@@ -144,7 +158,7 @@ class Title extends GUI {
         text.editText(contents);
         this.height = parseInt(text.font);
         let ctx = document.getElementById("canvas").getContext("2d");
-        this.width = ctx.measureText(contents).width;
+        this.width = Math.round(ctx.measureText(contents).width);
 
     }
 
@@ -197,11 +211,12 @@ class Canvas extends GUI {
 class Window extends GUI {
     constructor(posX, posY) {
         super(posX, posY);
-        this.component = this.initWindow();
+        this.component = undefined;
     }
 
     initWindow() {
-        let root = this.component.findRoot();
+        let root = new Primitive();
+        root.makeRoot(1);
         let contents = root.addNode("Rectangle");
         let tab = root.addNode("Rectangle");
         let button = tab.addNode("Primitive");
@@ -215,18 +230,19 @@ class Window extends GUI {
         btn_for.editText("X");
         btn_for.font = "20px Arial";
         btn_for.textAlign = "center";
-       
         
         contents.setSize(100, 1300);
         contents.posY = tab.posY;
         contents.setBackground("white")
+    
+        this.component = root;
         this.setBtnPos(tab.width);
+        this.action[`${btn.id}`]=[`closeGUI ${this.id}`]
         return root;
     }
 
     setBtnPos(width) {
         let root = this.component.findRoot();
-        // primitive
         let tab = root.children[1];
         let btn = root.children[1].children[0];
         let btn_style = btn.children[0];
@@ -354,6 +370,8 @@ class Table extends GUI {
                 let cell = child.addNode("Primitive");
                 cell.setStart(j*100, 0);
                 let border = cell.addNode("Rectangle");
+                let pos = border.id.split("-");
+                this.action[border.id] = [`changeCell ${this.id} ${pos[1]} ${pos[2]}`];
                 border.setSize(100, 60);
                 let contents = cell.addNode("Text");
                 contents.setStart(10, 0);

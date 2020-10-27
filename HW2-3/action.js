@@ -6,6 +6,7 @@ let g = createGUIRoot();
 
 // window
 let window = g.addGUI("Window");
+window.initWindow();
 window.setStart(100, 100);
 window.setWidth(1800);
 
@@ -24,6 +25,7 @@ let btn = window.addGUI("RectangleButton");
 btn.setStart(300, 1200);
 btn.setSize(200, 50);
 btn.setContents("Apply");
+btn.action['root'] = [`disableBtn ${btn.id} Enrolled`];
 
 // table 컨텐츠 채우기
 c.changeCellValue(1, 1, "Week");
@@ -70,6 +72,7 @@ c.changeCellValue(14, 3, "Exam");
 c.changeCellValue(15, 3, "HW 3/4/5 Due");
 c.changeCellValue(16, 3, "Final Report/Presentation Due");
 
+
 // 테이블 크기 변경
 c.changeRowHeight(0, 100);
 c.changeColWidth(0, 150);
@@ -78,14 +81,14 @@ c.changeColWidth(2, 450);
 c.setRowHeader(0);
 
 let alert = g.addGUI("Window");
-alert.setStart(800, 1000);
+alert.initWindow();
+alert.setStart(800, 650);
 alert.setWidth(400);
 alert.setHeight(200);
 
 let msg = alert.addGUI("Title");
 msg.setStart(100, 100);
-msg.setContents("Class Enrolled!");
-
+msg.setContents("Render Success!");
 
 // GUI 화면 표시
 drawGUITree(g);
