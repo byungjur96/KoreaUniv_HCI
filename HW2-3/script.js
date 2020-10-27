@@ -1,7 +1,7 @@
 import { Primitive, Point, Line, Text, Circle, Elliptic, Rectangle, RoundedRectangle } from '../common/primitive.js';
 import { GUI, Title, Canvas, Button, RectangleButton, CircleButton, EllipticButton, Window, Table } from '../common/gui.js';
 import { createPrimitiveRoot, createGUIRoot, findPrimitive, findGUI, printTree, getPrimitiveRoot, getGUIRoot } from '../common/display.js';
-import { popAlert, closeGUI, changeCell, disableBtn } from "../common/interaction.js";
+import { closeGUI, changeCell, disableBtn, goToLink } from "../common/interaction.js";
 
 let canvas = document.getElementById("canvas");
 
@@ -39,8 +39,12 @@ function actionParser(str) {
         changeCell(commands[1], commands[2], commands[3]);
     }
     else if (commands[0] === "disableBtn") {
-        disableBtn(commands[1], commands[2])
+        disableBtn(commands[1], commands[2]);
     }
+    else if (commands[0] === "goToLink") {
+        goToLink(commands[1], commands[2]);
+    }
+     
     
 }
 
@@ -82,6 +86,10 @@ function selectedBox(gui, primitive) {
     let posX = guiX + nodeX - 5;
     let posY = guiY + nodeY - 5;
     ctx.strokeRect(posX, posY, size[0]+10, size[1]+10);
+    let g = gui.getSize();
+    ctx.background="transparent";
+    ctx.strokeStyle="blue";
+    ctx.strokeRect(posX-nodeX, posY-nodeY, g[0]+10, g[1]+10);
     ctx.stroke();
 }
 
