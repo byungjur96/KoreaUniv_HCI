@@ -18,7 +18,7 @@ class GUI {
     setComponent() {
         let component = new Primitive();
         component.makeRoot(1);
-        return component
+        return component;
     }
 
     // id를 반환한다.
@@ -88,6 +88,30 @@ class GUI {
             ancestor = ancestor.parent;
         }
         return ancestor;
+    }
+
+    getSize() {
+        let component = this.component;
+        let node = component.findRoot();
+
+        let maxX = 0;
+        let maxY = 0;
+
+        let stack = [];
+        let temp = [node];
+        while (temp.length !== 0) {
+            let target = temp.pop();
+            let [tempX, tempY] = target.getAbsPos();
+            let [width, height] = target.getSize();
+            maxX = Math.max(maxX, tempX+width);
+            maxY = Math.max(maxY, tempY+height);
+            stack.push(target);
+            for (let child of target.children) {
+                temp.push(child);
+            }
+        };
+        
+        return [maxX, maxY];
     }
     
     // 자식 gui를 더한다.
