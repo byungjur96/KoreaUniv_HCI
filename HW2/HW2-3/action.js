@@ -42,7 +42,7 @@ sub.setHeight(200);
 
 let msg = sub.addGUI("Title");
 msg.setStart(100, 100);
-msg.setContents("Render Success!");
+msg.setContents("Focusing Test");
 
 
 // table 컨텐츠 채우기
