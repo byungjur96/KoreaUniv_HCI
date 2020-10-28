@@ -12,7 +12,7 @@ window.setWidth(1800);
 
 // title
 let title = window.addGUI("Title");
-title.setContents("Human Computer Interface(2020.2H)")
+title.setContents("Human Computer Interface(2020.2H)");
 title.setStart(650, 100);
 
 // table
@@ -27,12 +27,23 @@ btn1.setSize(200, 50);
 btn1.setContents("Apply");
 btn1.action['root'] = [`disableBtn ${btn1.id} Enrolled`];
 
-// Apply 버튼
+// Link 버튼
 let btn2 = window.addGUI("RectangleButton");
 btn2.setStart(550, 1200);
 btn2.setSize(200, 50);
 btn2.setContents("Visit Link");
 btn2.action['root'] = [`goToLink ${btn2.id} https://dxp.korea.ac.kr/`];
+
+let sub = window.addGUI("Window");
+sub.initWindow();
+sub.setStart(800, 650);
+sub.setWidth(400);
+sub.setHeight(200);
+
+let msg = sub.addGUI("Title");
+msg.setStart(100, 100);
+msg.setContents("Render Success!");
+
 
 // table 컨텐츠 채우기
 c.changeCellValue(1, 1, "Week");
@@ -79,7 +90,6 @@ c.changeCellValue(14, 3, "Exam");
 c.changeCellValue(15, 3, "HW 3/4/5 Due");
 c.changeCellValue(16, 3, "Final Report/Presentation Due");
 
-
 // 테이블 크기 변경
 c.changeRowHeight(0, 100);
 c.changeColWidth(0, 150);
@@ -93,9 +103,9 @@ alert.setStart(800, 650);
 alert.setWidth(400);
 alert.setHeight(200);
 
-let msg = alert.addGUI("Title");
-msg.setStart(100, 100);
-msg.setContents("Render Success!");
+let warning = alert.addGUI("Title");
+warning.setStart(100, 100);
+warning.setContents("Render Success!");
 
 // GUI 화면 표시
 drawGUITree(g);

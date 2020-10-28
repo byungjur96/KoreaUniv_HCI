@@ -10,14 +10,15 @@ canvas.addEventListener("click", (event) => {
     let result = {};
     
     let [posX, posY] = getClickPos(event);
-    
     // 클릭된 좌표에 위치하는 gui와 해당 gui의 primitive를 모두 확인한다.
     for (let root of roots) {
         let [guiX, guiY] = root.getAbsPos();
         result = traverseGUI(root, posX, posY, result);
     }
     let [gui, primitive] = chooseTop(result);
-
+    
+    if (gui === null && primitive === null) return;
+    
     selectedBox(gui, primitive);
     console.log(`${gui.id}[${gui.type}] Selected!\n(node: ${primitive.id}[${primitive.type}])`);
     // GUI 전체에 해당하는 event를 실행한다.
@@ -58,11 +59,10 @@ function getClickPos(e) {
     return [canvasX, canvasY];
 }
 
-// 
+// 해당 위치에 있는 요소들 중에 가장 상위 요소 1개를 확인한다.
 function chooseTop(obj) {
     // 해당 위치에 아무 요소도 없다면 null 값을 반환한다.
     if (Object.keys(obj).length === 0) return [null, null];
-
     let roots = getGUIRoot();
     let guiID = Object.keys(obj).reverse()[0];
     let gui = obj[guiID][0];
@@ -90,7 +90,7 @@ function selectedBox(gui, primitive) {
     // 선택된 gui에 테두리를 둘러준다.
     ctx.background="transparent";
     ctx.strokeStyle="blue";
-    ctx.strokeRect(guiX-5, guiY-5, g[0]+10, g[1]+10);
+    ctx.strokeRect(guiX-5, guiY-5, gWidth+10, gHeight+10);
 
     ctx.stroke();
 }
@@ -105,7 +105,6 @@ function traverseGUI(gui, x, y, res) {
         else res[gui.id] = [gui,lst];
     }
     for (let child of gui.children) {
-        let [guiX, guiY] = child.getAbsPos();
         res = traverseGUI(child, x, y, res);
     }
     return res;

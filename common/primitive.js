@@ -6,6 +6,8 @@ class Primitive {
         this.posY = posY;
         this.parent = null;
         this.children = [];
+        this.height = 0;
+        this.width = 0;
     }
 
     // id를 반환한다.
@@ -19,7 +21,7 @@ class Primitive {
     // node 자체를 반환한다.
     getNode() { return this; }
     // 요소가 차지하는 가로/세로값을 반환한다.
-    getSize() { return [0,0]; }
+    getSize() { return [this.width, this.height]; }
 
     // 해당 node의 id 값을 만든다.
     setId() {
@@ -63,12 +65,13 @@ class Primitive {
 
     // position을 반환한다.
     getAbsPos() {
-        let before = this.parent;
-        let [relX, relY] = [this.posX, this.posY];
-        while (before !== null && this.isRoot() === false) {
-            relX += before.posX;
-            relY += before.posY;
-            before = before.parent;
+        let node = this;
+        let relX = 0;
+        let relY = 0;
+        while (node !== null && node.isRoot() === false) {
+            relX += node.posX;
+            relY += node.posY;
+            node = node.parent;
         }
         return [relX, relY];
     }
@@ -126,8 +129,8 @@ class Primitive {
 
 // 점을 의미하는 class
 class Point extends Primitive {
-    constructor(posX, posY) {
-        super(posX, posY);
+    constructor(posX, posY, width, height) {
+        super(posX, posY, width, height);
     }
 
     getSize() {
@@ -156,15 +159,24 @@ class Line extends Primitive {
 
 // text를 나타내는 class
 class Text extends Primitive {
-    constructor(posX, posY, contents="", color="black", font="30px Arial", align="start", baseline="middle") {
+    constructor(posX, posY, contents="", color="black", font="30px Arial", align="start", baseline="hanging") {
         super(posX, posY);    
         this.contents = contents;
         this.color = color;
         this.font = font;
         this.textAlign = align;
         this.textBaseline = baseline;
-        [this.width, this.height] = [0,0];
+        this.setSize();
     }
+
+    setSize() {
+        let ctx = document.getElementById("canvas").getContext("2d");
+        let width = Math.round(ctx.measureText(this.contents).width);
+        let height = Math.round(parseInt(this.font));
+        this.width = width;
+        this.height = height;
+    }
+    
     // 텍스트를 수정하는 함수.
     editText(string) { 
         this.contents = string;

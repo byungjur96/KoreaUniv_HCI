@@ -109,8 +109,7 @@ class GUI {
             for (let child of target.children) {
                 temp.push(child);
             }
-        };
-        
+        }
         return [maxX, maxY];
     }
     
@@ -173,17 +172,22 @@ class Title extends GUI {
         let root = this.component.findRoot();
         let text = root.addNode("Text");
         this.component = root;
-        this.height = 0;
-        this.width = 0;
+        this.setSize();
+    }
+
+    setSize() {
+        let ctx = document.getElementById("canvas").getContext("2d");
+        let text = this.component.findRoot().children[0];
+        let width = Math.round(ctx.measureText(text.contents).width);
+        let height = Math.round(parseInt(text.font));
+        this.width = width;
+        this.height = height;
     }
 
     setContents(contents) {
         let text = this.component.findRoot().children[0];
         text.editText(contents);
-        this.height = parseInt(text.font);
-        let ctx = document.getElementById("canvas").getContext("2d");
-        this.width = Math.round(ctx.measureText(contents).width);
-
+        this.setSize();
     }
 
     setRowAlign(idx, align="center") {
@@ -392,13 +396,14 @@ class Table extends GUI {
             child.setStart(0, children.indexOf(child)*50);
             for(let j=0; j<column; j++) {
                 let cell = child.addNode("Primitive");
-                cell.setStart(j*100, 0);
                 let border = cell.addNode("Rectangle");
+                let contents = cell.addNode("Text");
+                cell.setStart(j*100, 0);
+                border.setSize(100, 60);
+                contents.setStart(10, 0);
                 let pos = border.id.split("-");
                 this.action[border.id] = [`changeCell ${this.id} ${pos[1]} ${pos[2]}`];
-                border.setSize(100, 60);
-                let contents = cell.addNode("Text");
-                contents.setStart(10, 0);
+                this.action[contents.id] = [`changeCell ${this.id} ${pos[1]} ${pos[2]}`];
             }
         }
         this.component = rootNode;
@@ -482,7 +487,7 @@ class Table extends GUI {
     verticalAlign(node) {
         let rec = node.children[0];
         let text = node.children[1];
-        text.posY = rec.height/2;
+        text.posY = (rec.height - text.height)/2;
     }
 
     // 가로로 텍스트를 가운데 정렬해준다.
