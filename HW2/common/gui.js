@@ -265,7 +265,8 @@ class Window extends GUI {
     
         this.component = root;
         this.setBtnPos(tab.width);
-        this.action[`${btn.id}`]=[`closeGUI ${this.id}`]
+        this.action[`${btn.id}`]=[`closeGUI ${this.id}`];
+        this.action[`${btn_for.id}`]=[`closeGUI ${this.id}`];
         return root;
     }
 
