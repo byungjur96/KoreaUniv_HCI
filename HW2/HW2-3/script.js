@@ -2,8 +2,20 @@ import { Primitive, Point, Line, Text, Circle, Elliptic, Rectangle, RoundedRecta
 import { GUI, Title, Canvas, Button, RectangleButton, CircleButton, EllipticButton, Window, Table } from '../common/gui.js';
 import { createPrimitiveRoot, createGUIRoot, findPrimitive, findGUI, printTree, getPrimitiveRoot, getGUIRoot } from '../common/display.js';
 import { closeGUI, changeCell, disableBtn, goToLink } from "../common/interaction.js";
+import { drawLine, drawText, drawCircle, drawElliptic, drawRectangle, drawNode, drawPrimitiveTree, drawGUITree } from '../common/draw.js'
+import { parseXML } from '../common/parser.js'
 
 let canvas = document.getElementById("canvas");
+fetch("syllabus.xml").then((response) => {
+    response.text().then((xml)=> {
+        let parser = new DOMParser();
+        let xmlDOM = parser.parseFromString(xml, 'text/xml');
+        let contents = xmlDOM.getElementsByTagName('document');
+        let tree = parseXML(contents[0]);
+        drawGUITree(tree);
+    });
+});
+
 
 canvas.addEventListener("click", (event) => {
     let roots = getGUIRoot();

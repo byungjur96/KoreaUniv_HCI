@@ -1,86 +1,98 @@
-<window>
-    <title></title>
-    <table>
-        <th>
-            <cell></cell>
-            <cell></cell>
-            <cell></cell>
-        </th>
-        <tr>
-            <cell></cell>
-            <cell></cell>
-            <cell></cell>
-        </tr>
-        <tr>
-            <cell></cell>
-            <cell></cell>
-            <cell></cell>
-        </tr>
-        <tr>
-            <cell></cell>
-            <cell></cell>
-            <cell></cell>
-        </tr>
-        <tr>
-            <cell></cell>
-            <cell></cell>
-            <cell></cell>
-        </tr>
-        <tr>
-            <cell></cell>
-            <cell></cell>
-            <cell></cell>
-        </tr>
-        <tr>
-            <cell></cell>
-            <cell></cell>
-            <cell></cell>
-        </tr>
-        <tr>
-            <cell></cell>
-            <cell></cell>
-            <cell></cell>
-        </tr>
-        <tr>
-            <cell></cell>
-            <cell></cell>
-            <cell></cell>
-        </tr>
-        <tr>
-            <cell></cell>
-            <cell></cell>
-            <cell></cell>
-        </tr>
-        <tr>
-            <cell></cell>
-            <cell></cell>
-            <cell></cell>
-        </tr>
-        <tr>
-            <cell></cell>
-            <cell></cell>
-            <cell></cell>
-        </tr>
-        <tr>
-            <cell></cell>
-            <cell></cell>
-            <cell></cell>
-        </tr>
-        <tr>
-            <cell></cell>
-            <cell></cell>
-            <cell></cell>
-        </tr>
-        <tr>
-            <cell></cell>
-            <cell></cell>
-            <cell></cell>
-        </tr>
-        <tr>
-            <cell></cell>
-            <cell></cell>
-            <cell></cell>
-        </tr>
-    </table>
-    <button></button>
-</window>
+<?xml version="1.0"?>
+<document>
+    <Window x="100" y="100" width="1800" height="1300">
+        <Title x="650" y="100">Human Computer Interface(2020.2H)</Title>
+        <Table row="16" col="3" x="300" y="150">
+            <Component>
+                <Row type="head" height="100">
+                    <Cell width="150">Week</Cell>
+                    <Cell width="600">Contents</Cell>
+                    <Cell width="450">Events</Cell>
+                </Row>
+                <Row>
+                    <Cell>9-1</Cell>
+                    <Cell>Introduction</Cell>
+                    <Cell></Cell>
+                </Row>
+                <Row>
+                    <Cell>9-2(2)</Cell>
+                    <Cell>HTML/Java Script/XD</Cell>
+                    <Cell>HW1</Cell>
+                </Row>
+                <Row>
+                    <Cell>9-3(2)</Cell>
+                    <Cell>HTML/Java Script/XD</Cell>
+                    <Cell>HW2</Cell>
+                </Row>
+                <Row>
+                    <Cell>9-4(2)</Cell>
+                    <Cell>HCI System</Cell>
+                    <Cell></Cell>
+                </Row>
+                <Row>
+                    <Cell>9-5(1)</Cell>
+                    <Cell>Principles and Guidelines</Cell>
+                    <Cell>HW 3/4/5</Cell>
+                </Row>
+                <Row>
+                    <Cell>10-1(2)</Cell>
+                    <Cell>Principles and Guidelines/Cognitive Aspect</Cell>
+                    <Cell>Proposal</Cell>
+                </Row>
+                <Row>
+                    <Cell>10-2(2)</Cell>
+                    <Cell>Design Process</Cell>
+                    <Cell></Cell>
+                </Row>
+                <Row>
+                    <Cell>10-3(2)</Cell>
+                    <Cell>User Research</Cell>
+                    <Cell>HW1 Due</Cell>
+                </Row>
+                <Row>
+                    <Cell>10-4(2)</Cell>
+                    <Cell>Project Proposal (Selected)</Cell>
+                    <Cell>Proposal Due</Cell>
+                </Row>
+                <Row>
+                    <Cell>11-1(2)</Cell>
+                    <Cell>Ergonomics</Cell>
+                    <Cell>HW2 Due</Cell>
+                </Row>
+                <Row>
+                    <Cell>11-2(2)</Cell>
+                    <Cell>Ergonomics/Implementation Issue</Cell>
+                    <Cell></Cell>
+                </Row>
+                <Row>
+                    <Cell>11-3(2)</Cell>
+                    <Cell>Implementation Issue/HCI Design</Cell>
+                    <Cell></Cell>
+                </Row>
+                <Row>
+                    <Cell>11-4(2)</Cell>
+                    <Cell>Evaluation</Cell>
+                    <Cell>Exam</Cell>
+                </Row>
+                <Row>
+                    <Cell>12-1(2)</Cell>
+                    <Cell>Buffer</Cell>
+                    <Cell>HW 3/4/5 Due</Cell>
+                </Row>
+                <Row>
+                    <Cell>12-2(2)</Cell>
+                    <Cell>Final Report Presentation</Cell>
+                    <Cell>Final Report/Presentation Due</Cell>
+                </Row>
+            </Component>
+        </Table>
+        <Button style="Rectangle" x="300" y="1200" width="200" height="50">Apply</Button>
+        <Button style="Rectangle" x="550" y="1200" width="200" height="50">Visit Link</Button>
+        <Window x="800" y="650" width="400" height="200">
+            <Title x="100" y="100">Focusing Test</Title>
+        </Window>
+    </Window>
+    <Window x="800" y="650" width="400" height="200">
+        <Title x="100" y="100">Render Success!</Title>
+    </Window>
+</document>

@@ -31,8 +31,8 @@ function disableBtn(gui, newText) {
     // 버튼 GUI가 아닌 경우 아무 일도 발생하지 않음
     if (btn.type.includes("Button")===false) return;
     let box = btn.component.children[0];
-    box.setBackground("lightgray");
     let text = btn.component.children[1];
+    box.setBackground("lightgray");
     text.color ="gray";
     text.editText(newText);
     btn.action['root'] = [];

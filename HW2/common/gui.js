@@ -240,6 +240,7 @@ class Window extends GUI {
     constructor(posX, posY) {
         super(posX, posY);
         this.component = undefined;
+        this.initWindow();
     }
 
     initWindow() {
