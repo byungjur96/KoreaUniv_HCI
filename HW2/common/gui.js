@@ -254,7 +254,7 @@ class Window extends GUI {
         tab.setSize(100, 30);
         tab.setBackground("lightgray");
         btn.setBackground("red");
-        btn_for.setStart(10,10);
+        btn_for.setStart(10,5);
         btn_for.editText("X");
         btn_for.font = "20px Arial";
         btn_for.textAlign = "center";

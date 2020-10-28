@@ -17,8 +17,7 @@ canvas.addEventListener("click", (event) => {
     }
     let [gui, primitive] = chooseTop(result);
     
-    if (gui === null && primitive === null) return;
-    
+    if (gui === null || primitive === null) return;
     selectedBox(gui, primitive);
     console.log(`${gui.id}[${gui.type}] Selected!\n(node: ${primitive.id}[${primitive.type}])`);
     // GUI 전체에 해당하는 event를 실행한다.
@@ -80,7 +79,6 @@ function selectedBox(gui, primitive) {
     let [pWidth, pHeight] = primitive.getSize();
     let [gWidth, gHeight] = gui.getSize();
     ctx.beginPath();
-    
     
     // 선택된 primitive에 테두리를 둘러준다.
     ctx.background="transparent";
