@@ -33,6 +33,7 @@ function disableBtn(gui, newText) {
     let box = btn.component.children[0];
     box.setBackground("lightgray");
     let text = btn.component.children[1];
+    text.color ="gray";
     text.editText(newText);
     btn.action['root'] = [];
     drawGUITree(btn.findRoot());
