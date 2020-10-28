@@ -4,19 +4,25 @@ import { createPrimitiveRoot, createGUIRoot, findPrimitive, findGUI, printTree, 
 import { closeGUI, changeCell, disableBtn, goToLink } from "../common/interaction.js";
 import { drawLine, drawText, drawCircle, drawElliptic, drawRectangle, drawNode, drawPrimitiveTree, drawGUITree } from '../common/draw.js'
 import { parseXML } from '../common/parser.js'
+import { defaultAction } from './action.js';
+
+let defaultAct = document.getElementById("default");
+let xmlAct = document.getElementById("xml");
+
+defaultAct.addEventListener("click", () => defaultAction() );
+xmlAct.addEventListener("click", () => {
+    fetch("syllabus.xml").then((response) => {
+        response.text().then((xml)=> {
+            let parser = new DOMParser();
+            let xmlDOM = parser.parseFromString(xml, 'text/xml');
+            let contents = xmlDOM.getElementsByTagName('document');
+            let tree = parseXML(contents[0]);
+            drawGUITree(tree);
+        });
+    });
+})
 
 let canvas = document.getElementById("canvas");
-fetch("syllabus.xml").then((response) => {
-    response.text().then((xml)=> {
-        let parser = new DOMParser();
-        let xmlDOM = parser.parseFromString(xml, 'text/xml');
-        let contents = xmlDOM.getElementsByTagName('document');
-        let tree = parseXML(contents[0]);
-        drawGUITree(tree);
-    });
-});
-
-
 canvas.addEventListener("click", (event) => {
     let roots = getGUIRoot();
     let result = {};
