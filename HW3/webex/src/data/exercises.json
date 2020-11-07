@@ -1,0 +1,31 @@
+{
+     "0" : {
+         "name": "윗몸일으키기",
+         "pos" : "복부",
+         "thumbnail" : "2.png",
+         "video" : "",
+         "info" : []
+     },
+    "1" : {
+        "name": "플랭크",
+        "pos" : "복부",
+        "thumbnail" : "1.jpg",
+        "video" : "",
+        "info" : []
+    },
+    "2" : {
+        "name": "스쿼트",
+        "pos" : "복부",
+        "thumbnail" : "3.jpg",
+        "video" : "",
+        "info" : []
+    },
+    "3" : {
+        "name": "데드리프트",
+        "pos" : "등",
+        "thumbnail" : "4.jpeg",
+        "video" : "",
+        "info" : []
+    }
+}
+
