@@ -4,18 +4,21 @@
         <router-link class="link" to="/setting">Setting</router-link>
         <router-link class="link" to="/exercise">Start</router-link>
         <router-link class="link" to="/History">History</router-link>
-        <div class="link">Quit</div>
+        <div class="link" @click="quit">Quit</div>
     </div>
 </template>
 
 <script>
 import router from '../router/router'
 
-export default {    
-  name: 'Home',
-  components: {
-    
-  },
+export default {
+    name: 'Home',
+    components: {},
+    methods: {
+        quit: function () {
+            window.alert("수고하셨습니다!");
+        }
+    },
   router
 }
 </script>

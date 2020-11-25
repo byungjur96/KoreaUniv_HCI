@@ -5,12 +5,12 @@
                 <div class="modal-content">
                     <h2 class="title">{{ title }}</h2>
                     <template v-if="!modify">
-                        <select v-model="name">
+                        <select v-model="name" @change="selectEx(idx)">
                             <option v-for="(ex,idx) in exerciseList" :key="idx">{{ ex }}</option>
                         </select>
                     </template>
                     <template v-if="selected">
-                        <img class="how-to" :src="require(`../images/${exercise.thumbnail}`)" alt="">
+                        <img class="how-to" :src="require(`../images/${thumbnail}`)" alt="">
                         <div class="setting"><input type="number" v-model="num"> Times in 6 month</div>
                         <div class="setting"><input type="number" v-model="term"> sec Between.</div>
                     </template>
@@ -35,14 +35,23 @@ export default {
         for (const key of Object.keys(exercises)) {
             this.exerciseList.push(exercises[key].name);
         }
-        console.log(exercises);
+    },
+    methods: {
+        selectEx: function() {
+            this.idx = this.exerciseList.indexOf(this.name);
+            let info = exercises[this.idx];
+            this.num = info.num;
+            this.term = info.term;
+            this.thumbnail = info.thumbnail;
+        }
     },
     data() {
         return {
             name: this.modify ? this.$props.exercise.name : "",
-            num : this.modify ? this.$props.exercise.num : 0,
-            term : this.modify ? this.$props.exercise.term : 0,
+            num : this.modify ? this.$props.exercise.num : 2,
+            term : this.modify ? this.$props.exercise.term : 2,
             idx : this.modify ? this.$props.exercise.idx : undefined,
+            thumbnail : this.modify ? this.$props.exercise.thumbnail : "",
             enroll : this.modify ? 'Change' : 'Add',
             exerciseList : []
         }
@@ -53,6 +62,7 @@ export default {
             else return this.name;
         },
         selected: function() {
+            console.log(this.name);
             return this.name !== "";
         },
         result: function() {
@@ -81,12 +91,11 @@ export default {
 <style scoped>
 .how-to {
     border: 1px solid black;
-    width: calc(80vw - 30px);
-    margin: 0 15px 15px;
-    /*height: 100px;*/
+    width: 100%;
+    margin-top: 15px;
 }
 .setting {
-    margin: 15px;
+    margin: 15px 0;
 }
 
 .setting > input { width: 30px}
@@ -111,7 +120,7 @@ export default {
 .modal-content {
     padding: 10px 20px;
     width: 80vw;
-    height: 40vh;
+    height: 50vh;
 }
 .modal-footer {
     background: #ccc;
