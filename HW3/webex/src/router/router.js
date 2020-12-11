@@ -37,6 +37,10 @@ const routes = [
         name : 'History',
         component: History,
     },
+    {
+        path: '/index.html',
+        redirect: "/"
+    },
 ];
 
 const router = new VueRouter({
