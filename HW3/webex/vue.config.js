@@ -1,3 +1,4 @@
 module.exports = {
-    outputDir : './dist/',
+    publicPath: '/HW3/WebEx/docs',
+    outputDir: 'docs'
 }
