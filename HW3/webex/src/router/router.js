@@ -45,7 +45,7 @@ const routes = [
 
 const router = new VueRouter({
     mode: 'history',
-    base: "HW3/webex/docs/",
+    base: "KoreaUniv_HCI/HW3/webex/docs/",
     routes
 });
 
