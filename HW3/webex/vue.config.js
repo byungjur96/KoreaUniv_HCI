@@ -1,4 +1,4 @@
 module.exports = {
-    publicPath: '/HW3/WebEx/docs',
-    outputDir: 'docs'
+    publicPath: '/KoreaUniv_HCI/HW3/WebEx/docs',
+    // outputDir: 'docs'
 }
