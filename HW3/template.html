@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .phone {
+            width: 600px;
+            height: 1000px;
+            position: relative;
+        }
+
+        .frame {
+            width: 580px;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .screen {
+            position: absolute;
+            left: 105px;
+            top: 25px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="phone">
+            <iframe class="screen" src="https://byungjur96.github.io/KoreaUniv_HCI/HW3/webex/docs/" frameborder="0" width="375" height="812"></iframe>
+            <img class="frame" src="./phone.png" alt="">
+        </div>
+        
+    </div>    
+</body>
+</html>
