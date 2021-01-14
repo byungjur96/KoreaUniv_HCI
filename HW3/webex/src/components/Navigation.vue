@@ -48,7 +48,7 @@ export default {
 
 <style scoped>
 #container {
-    height: 90px;
+    height: 64px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -70,7 +70,6 @@ export default {
 }
 
 .title {
-    margin-top: 30px;
     font-size: 24px;
     font-weight: bold;
 }
