@@ -224,7 +224,7 @@ export default {
 
 .record {
     width: 90%;
-    height: 50%;
+    height: 306px;
     margin : 10px 5%;
     border: 1px solid black;
 }
